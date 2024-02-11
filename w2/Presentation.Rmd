@@ -1,0 +1,212 @@
+---
+title: '<font size = 7 color = "white">RMarkdown Presentation</font>'
+subtitle: '<img src="img/logo_1.png" width=100 height=100><img src="img/RMarkdown-logo.png" width=90 height=100> <img src="img/xaringan-logo.png" width=90 height=100>'
+author: '<font size = 5 color = "white"> Edward Coleman </font>'
+institute: '<font size = 6 color = "white">West Chester University of 
+Pennsylvania</font><br> '
+date: ' <font color = "white" size =4> Prepared for<br> </font> <br> 
+<font color = "gold" size = 6> STA553: Data Visualization </font> <br> 
+<br> <font color = "white" size = 3> Slides available at: https://your.RPubs-url AND https://your-GitHub-url</font>'
+output:
+ xaringan::moon_reader:
+ css: xaringan-themer01.css
+ nature:
+ slideNumberFormat: "%current%"
+ highlightStyle: github
+ highlightLines: true
+ ratio: 16:9
+ countIncrementalSlides: true
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("pander")) {
+   install.packages("pander")
+   library(pander)
+}
+if (!require("htmltools")) {
+   install.packages("htmltools")
+   library(htmltools)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+knitr::opts_chunk$set(
+                  fig.width=3, 
+                  fig.height=3, 
+                  fig.retina=12,
+                  out.width = "100%",
+                  cache = FALSE,
+                  echo = TRUE,
+                  message = FALSE, 
+                  warning = FALSE,
+                  hiline = TRUE
+                  )
+```
+
+```{r xaringan-themer, include=FALSE, warning=FALSE}
+library(xaringanthemer)
+  style_duo_accent(primary_color = "#1F4257",
+          secondary_color = "#380F2A",
+          # fonts
+          header_font_google = google_font("Martel"),
+          text_font_google = google_font("Lato"),
+          code_font_google = google_font("Fira Mono"))
+```
+
+```{r echo=FALSE}
+setwd("C:/Users/ecole/OneDrive - West Chester University of PA/Data Visualization/Week Two")
+Data <- read.csv("Flight_delay-data.csv")
+```
+
+
+class:inverse4, top
+
+<h1 align="center"> Table of Contents</h1>
+<BR>
+
+.pull-left[
+- Coloring and color matching
+   - Text coloring
+   - Slide background coloring
+   - RGB and HEX color mixing 
+- Matching R plot and slide background
+   - Customizing background color
+   - choosing appropriate colors for plots
+]
+
+.pull-right[
+- Aesthetics of plots and tables
+   - Managing graphical features
+      - Sizes of title
+      - sizes of labels and tick marks
+      - dimension of plot through chunk option
+   - Static text tables
+   - Interactive data tables
+- Interactive plots
+- Embedding images
+   - static and animated images
+   - controlling size of images
+]
+
+
+
+
+
+---
+name: colors-headers
+
+### Coloring 
+
+Coloring text through HTML tag or CSS style.
+
+|  colored text     |     HTML tag       |      CSS style        |
+|:-----------------:|:------------------:|:---------------------:|     
+| <font color="red">red</font>  |`<font color="red">red</font>`| `<font style="color:red">red</font>`|
+| <font color="#800080">purple</font>  |`<font color="#800080">purple</font>`| `<font style="color:#800080">purple</font>`|
+
+
+
+### Highlighting & Decorating
+
+
+|  Effect   |   Markdown    |              HTML   |      LaTex           |
+|:----------:|:------------:|:-------------------:|:--------------------:|
+| **bold**  |  `**bold**`   |     `<b>bold</b>`   |  `\textbf{bold}`     |
+| _italic_  |  `_italic_`   |    `<i>italic</i>`  |  `\textit{italic}`   |
+|~~strikethrough~~| `~~strikethrough~~`| `<s>strikethrough</s>` | `\cancel{strikethrough}`|
+
+
+
+---
+class: inverse1 center middle 
+
+
+## Matching Plot Background Color
+
+```{r echo=FALSE, fig.align='center', out.width = '600px'}
+par(bg = '#70384A', col.axis="white")
+arr_delay = Data$Arr_Delay
+hist(arr_delay, xlab="", main="Histogram of Arr_delay Distribution", 
+     cex.main=0.8, 
+     cex.lab=0.8,
+     col.axis = "white",
+     col.main = "white",
+     col.lab = "white",
+     col.sub="white",
+     col.tick="white",
+     col = '#70384A', 
+     border = "white")
+axis(2,col="white")
+axis(1,col="white")
+```
+
+---
+class: inverse1 center middle 
+exclude: `r if (requireNamespace("tibble", quietly=TRUE)) "false" else "true"`
+
+# Text Format Data Table
+
+```{r echo=FALSE, eval=requireNamespace("tibble", quietly=TRUE), comment=NA}
+tibble::as_tibble(Data)
+```
+
+---
+class: inverse3 center middle 
+exclude: `r if (requireNamespace("DT", quietly=TRUE)) "false" else "true"`
+
+# Interactive Data Table
+
+```{r eval=requireNamespace("DT", quietly=TRUE), echo=FALSE}
+DT::datatable(head(Data), fillContainer = FALSE, options = list(pageLength = 6))
+```
+
+---
+name:interactive-plot
+
+<h1 align = "center">Density of Arr_Delay within Flight Carriers UA, DL, & FL</h1>
+
+<BR><BR><BR>
+```{r echo=FALSE, out.width="80%", fig.align='right'}
+# define three densities
+carrier.UA <- Data[which(Data$Carrier == "UA"),]
+UA <- density(carrier.UA$Arr_Delay)
+carrier.DL <- Data[which(Data$Carrier == "DL"),]
+DL <- density(carrier.DL$Arr_Delay)
+carrier.FL <- Data[which(Data$Carrier == "FL"),]
+FL <- density(carrier.FL$Arr_Delay)
+# plot density curves
+fig <- plot_ly(x = ~UA$x, y = ~UA$y, 
+               type = 'scatter', mode = 'lines', 
+               name = 'UA', 
+               fill = 'tozeroy')  %>% 
+           # adding more density curves
+       add_trace(x = ~DL$x, y = ~DL$y, 
+                 name = 'DL', fill = 'tozeroy')  %>% 
+       add_trace(x = ~FL$x, y = ~FL$y, 
+                 name = 'FL', fill = 'tozeroy')  %>%   
+       layout(xaxis = list(title = 'Arr_Delay'),
+              yaxis = list(title = 'Density'))
+fig
+```
+
+---
+class: center, middle
+
+# Thanks!
+
+Slides created via the R packages:
+
+[**xaringan**](https://github.com/yihui/xaringan)<br>
+[gadenbuie/xaringanthemer](https://github.com/gadenbuie/xaringanthemer)
+
+The chakra comes from [remark.js](https://remarkjs.com), [**knitr**](http://yihui.name/knitr), and [R Markdown](https://rmarkdown.rstudio.com).
