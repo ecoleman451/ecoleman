@@ -1,0 +1,148 @@
+---
+title: "Penguins"
+output: html_document
+date: "2024-02-14"
+---
+
+<h1 class="title toc-ignore">Getting Started with Base R Graphics</h1>
+<h4 class="author">Edward Coleman</h4>
+<h4 class="date">West Chester University</h4>
+
+</div>
+
+
+<style type="text/css">
+
+div#TOC li {
+list-style:none;
+background-color:lightgray;
+background-image:none;
+background-repeat:none;
+background-position:0;
+font-family: Arial, Helvetica, sans-serif;
+color: #780c0c;
+}
+
+h1.title {
+font-size: 24px;
+color: darkblue;
+text-align: center;
+font-family: Arial, Helvetica, sans-serif;
+font-variant-caps: normal;
+}
+h4.author { font-size: 18px;
+font-family: Arial, Helvetica, sans-serif;
+color: navy;
+text-align: center;
+}
+h4.date { font-size: 18px;
+font-family: Arial, Helvetica, sans-serif;
+color: darkblue;
+text-align: center;
+}
+
+h1 {
+font-size: 22px;
+font-family: "Times New Roman", Times, serif;
+color: darkred;
+text-align: left;
+}
+h2 {
+font-size: 18px;
+font-family: "Times New Roman", Times, serif;
+color: navy;
+text-align: left;
+}
+h3 { font-size: 15px;
+font-family: "Times New Roman", Times, serif;
+color: darkred;
+text-align: left;
+}
+h4 {
+font-size: 18px;
+font-family: "Times New Roman", Times, serif;
+color: darkred;
+text-align: left;
+}
+
+
+a:link {
+color: green;
+}
+
+a:visited {
+color: purple;
+}
+
+a:hover {
+color: red;
+}
+
+a:active {
+color: yellow;
+}
+</style>
+<div id="base-plotting-functions" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> First Plots</h1>
+<div class="figure" style="text-align: center">
+```{r}
+setwd("C:/Users/ecole/OneDrive - West Chester University of PA/Data Visualization/Week Three (R Graphics)")
+pen <- read.csv("w03-penguins.csv")
+plot(pen$bill_length_mm, pen$flipper_length_mm)
+title(main = "Penguin Bill & Flipper Lengths")
+```
+
+<div class="figure" style="text-align: center">
+<p class="caption">
+Base plot with annotation: Iris
+</p>
+</div>
+<p>Here, I start with the same plot as above (although I add the title
+right away using the main argument to <code>plot()</code>) and then
+annotate it by coloring blue the data points corresponding.</p>
+```{r}
+bill_length = pen$bill_length_mm
+flipper_length = pen$flipper_length_mm
+species = pen$species
+
+adelie.id = which(species =="Adelie")
+chinstrap.id = which(species =="Chinstrap")
+gentoo.id = which(species =="Gentoo")
+
+plot(bill_length, flipper_length, main = "Penguin Bill & Flipper Length")
+points(bill_length[chinstrap.id], flipper_length[chinstrap.id], pch=19, col="blue")
+points(bill_length[adelie.id], flipper_length[adelie.id], pch=19, col="red")
+points(bill_length[gentoo.id], flipper_length[gentoo.id], pch=19, col="green")
+```
+
+</div>
+<div class="figure" style="text-align: center">
+<div id="controlling-point-size-and-transparency" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Final Plot (Controlling Point Size
+and Transparency)</h1>
+<p>we use <code>cex=</code> and <code>alpha=</code> to control the point
+size according to the value of a variable and the level of transparency
+of the point.</p>
+```{r}
+bill_length = pen$bill_length_mm
+flipper_length = pen$flipper_length_mm
+species = pen$species
+body_mass = (pen$body_mass_g/5000)
+
+adelie.id = which(species =="Adelie")
+chinstrap.id = which(species =="Chinstrap")
+gentoo.id = which(species =="Gentoo")
+## making an empty plot: type = &quot;n&quot; ==&gt; no point
+plot(bill_length, flipper_length, main = "Bill Length vs Flipper Length by Body Mass")
+## change the point size based on their average of Bill and Flipper lengths
+points(bill_length[adelie.id], flipper_length[adelie.id], 
+       pch = 19, col = "red", cex = body_mass[adelie.id])
+points(bill_length[chinstrap.id], flipper_length[chinstrap.id], 
+       pch = 19, col = "blue", cex = body_mass[chinstrap.id])
+points(bill_length[gentoo.id], flipper_length[gentoo.id], 
+       pch = 19, col = "green", cex = body_mass[gentoo.id])
+legend("topleft", c("adelie", "chinstrap", "gentoo"), col = c("red", "blue", "green"),
+                  pch=c(18, 19, 20))
+htmltools::img(src="img/penguin.jpeg")
+```
+
