@@ -1,35 +1,35 @@
 ---
 title: "Penguins"
-output: html_document
+output:
+  html_document:
+    code_folding: hide
+    highlight: textmate
 date: "2024-02-14"
 ---
-
-<h1 class="title toc-ignore">Getting Started with Base R Graphics</h1>
-<h4 class="author">Edward Coleman</h4>
-<h4 class="date">West Chester University</h4>
-
-</div>
-
-
 <style type="text/css">
 
-div#TOC li {
-list-style:none;
-background-color:lightgray;
-background-image:none;
-background-repeat:none;
-background-position:0;
-font-family: Arial, Helvetica, sans-serif;
-color: #780c0c;
-}
+  pre code {
+    display: block;
+    margin-left: 0;
+  }
 
-h1.title {
-font-size: 24px;
-color: darkblue;
-text-align: center;
-font-family: Arial, Helvetica, sans-serif;
-font-variant-caps: normal;
-}
+  div#TOC li {
+    list-style: none;
+    background-color: lightgray;
+    background-image: none;
+    background-repeat: none;
+    background-position: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #780c0c;
+  }
+
+  h1.title {
+    font-size: 24px;
+    color: darkblue;
+    text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
+    font-variant-caps: normal;
+  }
 h4.author { font-size: 18px;
 font-family: Arial, Helvetica, sans-serif;
 color: navy;
@@ -82,11 +82,13 @@ a:active {
 color: yellow;
 }
 </style>
+<h1 class="title toc-ignore">Getting Started with Base R Graphics</h1>
+<h4 class="author">Edward Coleman</h4>
+<h4 class="date">West Chester University</h4>
 <div id="base-plotting-functions" class="section level1" number="1">
 <h1><span class="header-section-number">1</span> First Plots</h1>
 <div class="figure" style="text-align: center">
 ```{r}
-setwd("C:/Users/ecole/OneDrive - West Chester University of PA/Data Visualization/Week Three (R Graphics)")
 pen <- read.csv("w03-penguins.csv")
 plot(pen$bill_length_mm, pen$flipper_length_mm)
 title(main = "Penguin Bill & Flipper Lengths")
