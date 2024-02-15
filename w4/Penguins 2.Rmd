@@ -149,7 +149,7 @@ of the point.</p>
 bill_length = new$bill_length_mm
 flipper_length = new$flipper_length_mm
 species = new$species
-body_mass = (new$body_mass_g/5000)
+body_mass = (new$BMI*2)
 
 adelie.id = which(species =="Adelie")
 gentoo.id = which(species =="Gentoo")
