@@ -161,3 +161,5 @@ points(bill_length[gentoo.id], flipper_length[gentoo.id],
        pch = 19, col = "green", cex = body_mass[gentoo.id])
 legend("topleft", c("adelie", "gentoo"), col = c("red", "green"), pch=c(18, 19, 20))
 ```
+
+<p>We can see in the plot above that Gentoo penguins, when compared to just Adelie penguins, tend to have a larger flipper & bill length and is slightly linearly positive. The Adelie species has a slightly positive linear relationship with bill length and flipper length, although its flipper lengths still seem to have the lower values when compared to the Gentoo species.</p>
