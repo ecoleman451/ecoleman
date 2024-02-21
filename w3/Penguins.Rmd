@@ -236,4 +236,4 @@ legend("topleft", c("adelie", "chinstrap", "gentoo"), col = c("red", "blue", "gr
 rasterImage(raster.pen,6,3.5,7,4.4)
 text(7.25, 2.25, "The size is proportional to body mass", col = "purple", cex = 0.5)
 ```
-
+<p>We can see in the plot above that Gentoo penguins, when compared to Chinstrap & Adelie penguins, tend to have a larger flipper & bill length and is linearly positive. The chinstrap species has a linearly positive trend as well, with its bill length much larger in proportion to its flipper length. The Adelie species has a slightly positive linear relationship with bill lenght and flipper length, although its flipper lengths seem to have the lowest values when compared to Chinstrap and Gentoo penguins.</p>
