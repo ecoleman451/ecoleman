@@ -104,7 +104,7 @@ color: yellow;
 <h1><span class="header-section-number">1</span> First Plots</h1>
 <div class="figure" style="text-align: center">
 ```{r}
-pen <- read.csv("w03-penguins.csv")
+pen <- read.csv("https://ecoleman451.github.io/ecoleman/w4/w03-penguins.csv")
 # Delete all records with at least one missing componenet
 new_pen <- na.omit(pen)
 
