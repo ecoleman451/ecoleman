@@ -182,7 +182,7 @@ knitr::opts_chunk$set(echo = TRUE,
 <h1><span class="header-section-number">1</span> First Plots</h1>
 <div class="figure" style="text-align: center">
 ```{r}
-pen <- read.csv("w03-penguins.csv")
+pen <- read.csv("https://ecoleman451.github.io/ecoleman/w3/w03-penguins.csv")
 plot(pen$bill_length_mm, pen$flipper_length_mm)
 title(main = "Penguin Bill & Flipper Lengths")
 ```
