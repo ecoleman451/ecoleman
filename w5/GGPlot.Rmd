@@ -159,17 +159,17 @@ life <- read.csv("https://ecoleman451.github.io/ecoleman/w5/life_expectancy_year
 new_income <- pivot_longer(income, cols = -geo, names_to = "year", values_to = "income")
 head(new_income)
 
-new_life <- pivot_longer(life, cols = -geo, names_to = "year", values_to = "life expectancy")
+new_life <- pivot_longer(life, cols = -geo, names_to = "year", values_to = "life.expectancy")
 head(new_life)
 ```
 
-# Create new data set
+## Create new data set
 ```{r}
 LifeExpIncom <- merge(new_life, new_income, by = c("geo", "year"))
 head(LifeExpIncom)
 ```
 
-# Read in More Data
+## Read in More Data
 ```{r}
 country <- read.csv("https://ecoleman451.github.io/ecoleman/w5/countries_total.csv")
 head(country)
@@ -180,15 +180,65 @@ new_pop <- pivot_longer(pop, cols = -geo, names_to = "year", values_to = "popula
 head(new_pop)
 ```
 
-# Merge LifeExpIncom with Country
+## Merge LifeExpIncom with Country
 ```{r}
 merged <- merge(LifeExpIncom, country, by.x = "geo", by.y = "name", all.x = TRUE)
 head(merged)
 ```
 
-# Merge Population with Merged Data
+## Merge Population with Merged Data
 ```{r}
 final_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
 head(final_data)
 ```
+
+# GGPlots
+## Scatter Plots
+```{r}
+scatter_pop <- ggplot(final_data, aes(x = year, y = population, color = region, size = life.expectancy)) +
+  geom_point() +
+  labs(title = "Yearly Population Data",
+       x = "Year",
+       y = "Population",
+       size = "Life Expectancy",
+       color = "Region")
+
+scatter_life <- ggplot(final_data, aes(x = year, y = income, color = region, size = life.expectancy)) +
+  geom_point() +
+  labs(title = "Yearly Income Data",
+       x = "Year",
+       y = "income",
+       size = "Life Expectancy",
+       color = "Region")
+
+combined_plot <- plot_grid(scatter_pop, scatter_life)
+combined_plot
+```
+
+## Another GGPlot
+```{r}
+year = final_data$year
+# Create a ggplot
+ggplot(final_data, aes(x = year)) +
+  geom_line(aes(y = population, color = "Population"), size = 1) +
+  geom_line(aes(y = life.expectancy*1e6, color = "Life Expectancy"), size = 1) + # Multiplying life expectancy by 1e6 for better scale
+  scale_y_continuous(sec.axis = sec_axis(~./1e6, name = "Life Expectancy (millions)")) +
+  labs(title = "Population and Life Expectancy Over Years",
+       x = "Year",
+       y = "Population",
+       color = "Variable") +
+  theme_minimal()
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
