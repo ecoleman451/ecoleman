@@ -1570,6 +1570,122 @@ a:active {
 color: yellow;
 }
 </style>
+<div id="reading-in-data-sets" class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Reading in Data
+Sets</h1>
+<pre><code>## # A tibble: 6 × 3
+##   geo         year  income
+##   &lt;chr&gt;       &lt;chr&gt;  &lt;int&gt;
+## 1 Afghanistan X1800    603
+## 2 Afghanistan X1801    603
+## 3 Afghanistan X1802    603
+## 4 Afghanistan X1803    603
+## 5 Afghanistan X1804    603
+## 6 Afghanistan X1805    603</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   geo         year  `life expectancy`
+##   &lt;chr&gt;       &lt;chr&gt;             &lt;dbl&gt;
+## 1 Afghanistan X1800              28.2
+## 2 Afghanistan X1801              28.2
+## 3 Afghanistan X1802              28.2
+## 4 Afghanistan X1803              28.2
+## 5 Afghanistan X1804              28.2
+## 6 Afghanistan X1805              28.2</code></pre>
+</div>
+<div id="create-new-data-set" class="section level1" number="2">
+<h1><span class="header-section-number">2</span> Create new data
+set</h1>
+<pre><code>##           geo  year life expectancy income
+## 1 Afghanistan X1800            28.2    603
+## 2 Afghanistan X1801            28.2    603
+## 3 Afghanistan X1802            28.2    603
+## 4 Afghanistan X1803            28.2    603
+## 5 Afghanistan X1804            28.2    603
+## 6 Afghanistan X1805            28.2    603</code></pre>
+</div>
+<div id="read-in-more-data" class="section level1" number="3">
+<h1><span class="header-section-number">3</span> Read in More Data</h1>
+<pre><code>##                   name alpha.2 alpha.3 country.code    iso_3166.2  region
+## 1          Afghanistan      AF     AFG            4 ISO 3166-2:AF    Asia
+## 2 \xea\xf3land Islands      AX     ALA          248 ISO 3166-2:AX  Europe
+## 3              Albania      AL     ALB            8 ISO 3166-2:AL  Europe
+## 4              Algeria      DZ     DZA           12 ISO 3166-2:DZ  Africa
+## 5       American Samoa      AS     ASM           16 ISO 3166-2:AS Oceania
+## 6              Andorra      AD     AND           20 ISO 3166-2:AD  Europe
+##        sub.region intermediate.region region.code sub.region.code
+## 1   Southern Asia                             142              34
+## 2 Northern Europe                             150             154
+## 3 Southern Europe                             150              39
+## 4 Northern Africa                               2              15
+## 5       Polynesia                               9              61
+## 6 Southern Europe                             150              39
+##   intermediate.region.code
+## 1                       NA
+## 2                       NA
+## 3                       NA
+## 4                       NA
+## 5                       NA
+## 6                       NA</code></pre>
+<pre><code>## # A tibble: 6 × 3
+##   geo         year  population
+##   &lt;chr&gt;       &lt;chr&gt;      &lt;int&gt;
+## 1 Afghanistan X1800    3280000
+## 2 Afghanistan X1801    3280000
+## 3 Afghanistan X1802    3280000
+## 4 Afghanistan X1803    3280000
+## 5 Afghanistan X1804    3280000
+## 6 Afghanistan X1805    3280000</code></pre>
+</div>
+<div id="merge-lifeexpincom-with-country" class="section level1" number="4">
+<h1><span class="header-section-number">4</span> Merge LifeExpIncom with
+Country</h1>
+<pre><code>##           geo  year life expectancy income alpha.2 alpha.3 country.code
+## 1 Afghanistan X1817            28.0    604      AF     AFG            4
+## 2 Afghanistan X1815            28.1    604      AF     AFG            4
+## 3 Afghanistan X1812            28.1    604      AF     AFG            4
+## 4 Afghanistan X1814            28.1    604      AF     AFG            4
+## 5 Afghanistan X1811            28.1    604      AF     AFG            4
+## 6 Afghanistan X1816            28.1    604      AF     AFG            4
+##      iso_3166.2 region    sub.region intermediate.region region.code
+## 1 ISO 3166-2:AF   Asia Southern Asia                             142
+## 2 ISO 3166-2:AF   Asia Southern Asia                             142
+## 3 ISO 3166-2:AF   Asia Southern Asia                             142
+## 4 ISO 3166-2:AF   Asia Southern Asia                             142
+## 5 ISO 3166-2:AF   Asia Southern Asia                             142
+## 6 ISO 3166-2:AF   Asia Southern Asia                             142
+##   sub.region.code intermediate.region.code
+## 1              34                       NA
+## 2              34                       NA
+## 3              34                       NA
+## 4              34                       NA
+## 5              34                       NA
+## 6              34                       NA</code></pre>
+</div>
+<div id="merge-population-with-merged-data" class="section level1" number="5">
+<h1><span class="header-section-number">5</span> Merge Population with
+Merged Data</h1>
+<pre><code>##           geo  year population life expectancy income alpha.2 alpha.3
+## 1 Afghanistan X1800    3280000            28.2    603      AF     AFG
+## 2 Afghanistan X1801    3280000            28.2    603      AF     AFG
+## 3 Afghanistan X1802    3280000            28.2    603      AF     AFG
+## 4 Afghanistan X1803    3280000            28.2    603      AF     AFG
+## 5 Afghanistan X1804    3280000            28.2    603      AF     AFG
+## 6 Afghanistan X1805    3280000            28.2    603      AF     AFG
+##   country.code    iso_3166.2 region    sub.region intermediate.region
+## 1            4 ISO 3166-2:AF   Asia Southern Asia                    
+## 2            4 ISO 3166-2:AF   Asia Southern Asia                    
+## 3            4 ISO 3166-2:AF   Asia Southern Asia                    
+## 4            4 ISO 3166-2:AF   Asia Southern Asia                    
+## 5            4 ISO 3166-2:AF   Asia Southern Asia                    
+## 6            4 ISO 3166-2:AF   Asia Southern Asia                    
+##   region.code sub.region.code intermediate.region.code
+## 1         142              34                       NA
+## 2         142              34                       NA
+## 3         142              34                       NA
+## 4         142              34                       NA
+## 5         142              34                       NA
+## 6         142              34                       NA</code></pre>
+</div>
 
 
 

@@ -148,3 +148,47 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 ```
 
+# Reading in Data Sets
+```{r}
+income <- read.csv("https://ecoleman451.github.io/ecoleman/w5/income_per_person.csv")
+
+life <- read.csv("https://ecoleman451.github.io/ecoleman/w5/life_expectancy_years.csv")
+```
+```{r}
+# Reshape data set such that there are only three columns (Geo, Year, & Income)
+new_income <- pivot_longer(income, cols = -geo, names_to = "year", values_to = "income")
+head(new_income)
+
+new_life <- pivot_longer(life, cols = -geo, names_to = "year", values_to = "life expectancy")
+head(new_life)
+```
+
+# Create new data set
+```{r}
+LifeExpIncom <- merge(new_life, new_income, by = c("geo", "year"))
+head(LifeExpIncom)
+```
+
+# Read in More Data
+```{r}
+country <- read.csv("https://ecoleman451.github.io/ecoleman/w5/countries_total.csv")
+head(country)
+
+pop <- read.csv("https://ecoleman451.github.io/ecoleman/w5/population_total.csv")
+
+new_pop <- pivot_longer(pop, cols = -geo, names_to = "year", values_to = "population")
+head(new_pop)
+```
+
+# Merge LifeExpIncom with Country
+```{r}
+merged <- merge(LifeExpIncom, country, by.x = "geo", by.y = "name", all.x = TRUE)
+head(merged)
+```
+
+# Merge Population with Merged Data
+```{r}
+final_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
+head(final_data)
+```
+
