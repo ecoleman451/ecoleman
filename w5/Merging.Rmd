@@ -1,0 +1,194 @@
+---
+title: "Directory of Visualization"
+author: "Edward Coleman"
+date: "02-22-2024"
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    fig_width: 6
+    number_sections: yes
+    theme: readable
+    fig_height: 4
+  pdf_document: 
+    toc: yes
+    toc_depth: 4
+    fig_caption: yes
+    number_sections: yes
+    fig_width: 5
+    fig_height: 4
+---
+<style type="text/css">
+
+div#TOC li {
+    list-style:none;
+    background-color:lightgray;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #780c0c;
+}
+
+/* mouse over link */
+div#TOC a:hover {
+  color: red;
+}
+
+/* unvisited link */
+div#TOC a:link {
+  color: blue;
+}
+
+
+
+h1.title {
+  font-size: 24px;
+  color: Darkblue;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-variant-caps: normal;
+}
+h4.author { 
+    font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { 
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+
+h1 {
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: center;
+}
+h2 { 
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { 
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { 
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+/* unvisited link */
+a:link {
+  color: green;
+}
+
+/* visited link */
+a:visited {
+  color: green;
+}
+
+/* mouse over link */
+a:hover {
+  color: red;
+}
+
+/* selected link */
+a:active {
+  color: yellow;
+}
+
+</style>
+
+
+```{r setup, echo = FALSE, message = FALSE, include = FALSE, warning=FALSE}
+# run setup script
+#install.packages("remotes")
+#library(remotes)
+#remotes::install_github("clauswilke/dviz.supp")
+#devtools::install_github("clauswilke/dviz.supp")
+
+library(colorspace)
+library(dplyr)
+library(tidyverse)
+library(ggforce)
+library(ggridges)
+library(treemapify)
+library(forcats)
+library(statebins)
+library(sf)
+library(cowplot)
+
+
+options(digits = 3)
+knitr::opts_chunk$set(
+                 echo = FALSE,
+              message = FALSE,
+              warning = FALSE,
+               cache = FALSE,
+               #dpi = 105, # not sure why, but need to divide this by 2 to get 210 at 6in, 
+                           # which is 300 at 4.2in
+           fig.align = 'center',
+           fig.width = 6,
+             fig.asp = 0.618,  # 1 / phi
+            fig.show = "hold"
+            )
+options(dplyr.print_min = 6, dplyr.print_max = 6)
+```
+
+# Reading in Data Sets
+```{r}
+income <- read.csv("https://ecoleman451.github.io/ecoleman/w5/income_per_person.csv")
+
+life <- read.csv("https://ecoleman451.github.io/ecoleman/w5/life_expectancy_years.csv")
+```
+```{r}
+# Reshape data set such that there are only three columns (Geo, Year, & Income)
+new_income <- pivot_longer(income, cols = -geo, names_to = "year", values_to = "income")
+head(new_income)
+
+new_life <- pivot_longer(life, cols = -geo, names_to = "year", values_to = "life expectancy")
+head(new_life)
+```
+
+# Create new data set
+```{r}
+LifeExpIncom <- merge(new_life, new_income, by = c("geo", "year"))
+head(LifeExpIncom)
+```
+
+# Read in More Data
+```{r}
+country <- read.csv("https://ecoleman451.github.io/ecoleman/w5/countries_total.csv")
+head(country)
+
+pop <- read.csv("https://ecoleman451.github.io/ecoleman/w5/population_total.csv")
+
+new_pop <- pivot_longer(pop, cols = -geo, names_to = "year", values_to = "population")
+head(new_pop)
+```
+
+# Merge LifeExpIncom with Country
+```{r}
+merged <- merge(LifeExpIncom, country, by.x = "geo", by.y = "name", all.x = TRUE)
+head(merged)
+```
+
+# Merge Population with Merged Data
+```{r}
+final_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
+head(final_data)
+```
+
