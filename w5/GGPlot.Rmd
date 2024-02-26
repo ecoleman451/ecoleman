@@ -148,88 +148,55 @@ knitr::opts_chunk$set(
 options(dplyr.print_min = 6, dplyr.print_max = 6)
 ```
 
-# Reading in Data Sets
+# Data Summary
 ```{r}
 income <- read.csv("https://ecoleman451.github.io/ecoleman/w5/income_per_person.csv")
 
 life <- read.csv("https://ecoleman451.github.io/ecoleman/w5/life_expectancy_years.csv")
-```
-```{r}
+
 # Reshape data set such that there are only three columns (Geo, Year, & Income)
 new_income <- pivot_longer(income, cols = -geo, names_to = "year", values_to = "income")
-head(new_income)
 
 new_life <- pivot_longer(life, cols = -geo, names_to = "year", values_to = "life.expectancy")
-head(new_life)
-```
 
 ## Create new data set
-```{r}
 LifeExpIncom <- merge(new_life, new_income, by = c("geo", "year"))
-head(LifeExpIncom)
-```
 
 ## Read in More Data
-```{r}
 country <- read.csv("https://ecoleman451.github.io/ecoleman/w5/countries_total.csv")
-head(country)
 
 pop <- read.csv("https://ecoleman451.github.io/ecoleman/w5/population_total.csv")
 
 new_pop <- pivot_longer(pop, cols = -geo, names_to = "year", values_to = "population")
-head(new_pop)
-```
 
 ## Merge LifeExpIncom with Country
-```{r}
 merged <- merge(LifeExpIncom, country, by.x = "geo", by.y = "name", all.x = TRUE)
-head(merged)
-```
 
 ## Merge Population with Merged Data
+fin_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
+
+## Get Data for Year 2000
+final_data <- subset(fin_data, year =="X2000")
+```
+  We first read in two data sets called "income" and "life" representing income and life expectancy values throughout a multitude of years. "Income" has 193 observations with 220 total variables whilst "Life" has 187 observations and 220 total variables. Next, we reshape both data sets such that there are only three columns (Geo, Year, Income or Life Expectancy). We then merge these two new sets into a data set called "LifeExpIncom" which now contains Geo, Year, Income, & Life Expectancy (40953 observations and 4 variables). We then read in two more sets called "country" (240 observations and 11 variables) and "pop" (195 observations and 220 variables) respectively representing country and population data. We reshape the data set "pop" so that it coincides with "LifeExpIncom" and "Country" which already have the variable Year transformed into one column. After doing this, we're able to merge "LifeExpIncom" with "Country" and then this newly merged set with our recently transformed "pop" set, creating a set called "fin_data" (42705 observations and 15 variables). After this, all that is left is to subset the data so that we only focus on data from the year 2000. This gives us our "final_data" (195 observations and 15 variables) set:
 ```{r}
-final_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
-head(final_data)
+summary(final_data)
 ```
 
-# GGPlots
-## Scatter Plots
+# GGPlot
 ```{r}
-scatter_pop <- ggplot(final_data, aes(x = year, y = population, color = region, size = life.expectancy)) +
+scatter_pop <- ggplot(final_data, aes(x = life.expectancy, y = income, color = region, size = population)) +
   geom_point() +
-  labs(title = "Yearly Population Data",
-       x = "Year",
-       y = "Population",
-       size = "Life Expectancy",
+  labs(title = "Life Expectancy vs. Income per Region (2000)",
+       x = "Life Expectancy",
+       y = "Income",
+       size = "Population",
        color = "Region")
-
-scatter_life <- ggplot(final_data, aes(x = year, y = income, color = region, size = life.expectancy)) +
-  geom_point() +
-  labs(title = "Yearly Income Data",
-       x = "Year",
-       y = "income",
-       size = "Life Expectancy",
-       color = "Region")
-
-combined_plot <- plot_grid(scatter_pop, scatter_life)
-combined_plot
+scatter_pop
 ```
+The above scatter plot shows the relationship between income, life expectancy, and population size across different regions in the year 2000. Each point is a country and the size of the points correlate with the population size of that specific region. The countries are all color coded as well.
 
-## Another GGPlot
-```{r}
-year = final_data$year
-# Create a ggplot
-ggplot(final_data, aes(x = year)) +
-  geom_line(aes(y = population, color = "Population"), size = 1) +
-  geom_line(aes(y = life.expectancy*1e6, color = "Life Expectancy"), size = 1) + # Multiplying life expectancy by 1e6 for better scale
-  scale_y_continuous(sec.axis = sec_axis(~./1e6, name = "Life Expectancy (millions)")) +
-  labs(title = "Population and Life Expectancy Over Years",
-       x = "Year",
-       y = "Population",
-       color = "Variable") +
-  theme_minimal()
-```
-
+From looking at the plot, we can see that there is very slightly positive correlation between income and life expectancy. We can also tell that countries that have higher incomes will most likely have longer life expectancy. Eyeballing the plot, we can see that countries in the Americas and Asia definitely contain the higher population sizes. This also shows that countries with a higher population will most likely have a longer life expectancy as well. Those in Europe seem to have the longest life expectancy, with most of its points on the far right side of the graph - although their populations aren't as large as other countries.
 
 
 
