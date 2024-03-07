@@ -91,7 +91,7 @@ nav-pills>li:nth-child(2) {
  */
 </style>
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, comment=NA}
 options(repos = list(CRAN="http://cran.rstudio.com/"))
 if (!require("tidyverse")) {
    install.packages("tidyverse")
@@ -178,40 +178,67 @@ knitr::opts_chunk$set(echo = TRUE,
 ```
 
 # Data Summary
-```{r}
+## Income/Life Data
+  We first read in two data sets called "income" and "life" representing income and life expectancy values throughout a multitude of years. "Income" has 193 observations with 220 total variables whilst "Life" has 187 observations and 220 total variables.
+```{r, comment=NA}
 income <- read.csv("https://ecoleman451.github.io/ecoleman/w6/income_per_person.csv")
 
 life <- read.csv("https://ecoleman451.github.io/ecoleman/w6/life_expectancy_years.csv")
+```
 
+## Reshape Income/Life Data
+  Next, we reshape both data sets such that there are only three columns (Geo, Year, Income or Life Expectancy):
+```{r, comment=NA}
 # Reshape data set such that there are only three columns (Geo, Year, & Income)
 new_income <- pivot_longer(income, cols = -geo, names_to = "year", values_to = "income")
+head(new_income)
 
 new_life <- pivot_longer(life, cols = -geo, names_to = "year", values_to = "life.expectancy")
+head(new_life)
+```
 
+## Create New Data Set
+  We then merge these two new sets into a data set called "LifeExpIncom" which now contains Geo, Year, Income, & Life Expectancy (40953 observations and 4 variables).
+```{r, comment=NA}
 ## Create new data set
 LifeExpIncom <- merge(new_life, new_income, by = c("geo", "year"))
+head(LifeExpIncom)
+```
 
+## Adding in Country/Population Data
+  We then read in two more sets called "country" (240 observations and 11 variables) and "pop" (195 observations and 220 variables) respectively representing country and population data. We reshape the data set "pop" so that it coincides with "LifeExpIncom" and "Country" which already have the variable Year transformed into one column.
+```{r, comment=NA}
 ## Read in More Data
 country <- read.csv("https://ecoleman451.github.io/ecoleman/w6/countries_total.csv")
 
 pop <- read.csv("https://ecoleman451.github.io/ecoleman/w6/population_total.csv")
 
 new_pop <- pivot_longer(pop, cols = -geo, names_to = "year", values_to = "population")
+head(new_pop)
 
 ## Merge LifeExpIncom with Country
 merged <- merge(LifeExpIncom, country, by.x = "geo", by.y = "name", all.x = TRUE)
-
-## Merge Population with Merged Data
-fin_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
-
-## Get Data for Year 2015
-final_data <- subset(fin_data, year =="X2015")
-summary(final_data)
+head(merged)
 ```
 
+## Creating Final Data Set
+  After doing this, we're able to merge "LifeExpIncom" with "Country" and then this newly merged set with our recently transformed "pop" set, creating a set called "fin_data" (42705 observations and 15 variables).
+```{r, comment=NA}
+## Merge Population with Merged Data
+fin_data <- merge(new_pop, merged, by = c("geo", "year"), all.x = TRUE)
+head(fin_data)
+```
+
+## Subsetting Data for Year 2015
+  After this, all that is left is to subset the data so that we only focus on data from the year 2015. This gives us our "final_data" (195 observations and 15 variables) set. Now, let's look at the overall summary statistics for the data set "fin_data" which contains not just data from 2015, but from all years from the data set.
+```{r, comment=NA}
+## Get Data for Year 2015
+final_data <- subset(fin_data, year =="X2015")
+summary(fin_data)
+```
 
 # Plotly
-```{r}
+```{r, comment=NA}
 scatter_plot <- plot_ly(
   data = final_data,
   x = ~income,
@@ -222,12 +249,12 @@ scatter_plot <- plot_ly(
   type = "scatter",
   mode = "markers",
   marker = list(
-    opacity = 0.6,  # Transparency level
-    sizemode = "diameter",  # Set the size mode to diameter
-    sizeref = 0.1,  # Adjust the size reference for better visibility
+    opacity = 0.6,  ## Transparency level
+    sizemode = "diameter",  ## Set the size mode to diameter
+    sizeref = 0.1,  ## Adjust the size reference for better visibility
     line = list(
-      color = "black",  # Boundary color for points
-      width = 1  # Boundary width
+      color = "black",  ## Boundary color for points
+      width = 1  ## Boundary width
     )
   )
 )
@@ -235,12 +262,16 @@ layout <- list(
   title = "Association Between Life Expectancy and Income (Year 2015)",
   xaxis = list(title = "Income"),
   yaxis = list(title = "Life Expectancy"),
-  showlegend = FALSE  # Hide legend for individual countries
+  showlegend = FALSE  ## Hide legend for individual countries
 )
 
-# Combine the plot and layout
+## Combine the plot and layout
 scatter_plot <- layout(scatter_plot, layout)
 
-# Display the interactive scatter plot
+## Display the interactive scatter plot
 scatter_plot
 ```
+
+The above plot shows the relationship between income, life expectancy, and population size across different countries in the year 2015. Each point is a country and the size of the points correlate with the population size of that specific country. The countries are each color coded as well.
+
+The x-axis looks at the income levels for each country. Countries that have higher incomes will be skewed to the right. The y-axis looks at life expectancy. Countries with higher life expectancy will be skewed higher on the y axis. From looking at the plot, we can see that there are some countries that primarily take over the scatter plot as opposed to others depending on population size and income. We can look at whether countries that have higher incomes generally have longer life expectancies or examine the population sizes to see if they correlate with higher or lower income levels.
