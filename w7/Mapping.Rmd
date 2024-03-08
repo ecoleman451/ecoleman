@@ -169,6 +169,10 @@ if (!require("forecast")) {
     install.packages("forecast")              
     library("forecast")
 }
+if (!require("leaflet")) {
+    install.packages("leaflet")              
+    library("leaflet")
+}
 ## 
 knitr::opts_chunk$set(echo = TRUE,       
                       warning = FALSE,   
@@ -184,7 +188,81 @@ knitr::opts_chunk$set(echo = TRUE,
 gas <- read.csv("https://ecoleman451.github.io/ecoleman/w7/POC.csv")
 head(gas)
 ```
+```{r, comment=NA}
+ gas_samp <- gas %>% sample_n(500)
 
+# Create a leaflet map
+gas_map <- leaflet(data = gas_samp) %>%
+  addTiles() %>%
+  addMarkers(
+    lng = ~xcoord,
+    lat = ~ycoord,
+    popup = ~paste("State: ", STATE, "<br>",
+                   "County: ", county, "<br>",
+                   "Address: ", ADDRESS, "<br>",
+                   "Zip Code: ", ZIPnew)
+  )
+# Display the map
+gas_map
+```
 
+```{r, comment=NA}
+# Create a leaflet map
+gas_map2 <- leaflet(data = gas_samp) %>%
+  addTiles() %>%
+  setView(lng = mean(gas_samp$xcoord), 
+          lat = mean(gas_samp$ycoord), 
+          zoom = 13) %>%
+  addProviderTiles("Esri.WorldGrayCanvas") %>%
+  addCircleMarkers(
+    ~xcoord, 
+    ~ycoord,
+    color = "blue",  # Adjust color as needed
+    radius = 5,  # Adjust radius as needed
+    stroke = FALSE, 
+    fillOpacity = 0.4,
+    label = ~paste("State: ", STATE,
+                   "County: ", county,
+                   "Address: ", ADDRESS,
+                   "Zip Code: ", ZIPnew)
+  ) %>%
+  addLegend(position = "bottomright", 
+            colors = "blue",  # Adjust color as needed
+            labels = "Gas Station",
+            title = "Gas Stations",
+            opacity = 0.4)
 
+# Display the map
+gas_map2
+```
+
+```{r, comment=NA}
+# Create a color palette based on service_or_fuel values
+service_palette <- colorFactor(palette = "Set1", domain = gas_samp$service_or_fuel)
+
+# Create the leaflet map
+gas_map3 <- leaflet(data = gas_samp) %>%
+  addTiles() %>%
+  addProviderTiles("Esri.WorldGrayCanvas") %>%
+  addCircleMarkers(
+    ~xcoord, 
+    ~ycoord,
+    color = ~service_palette(service_or_fuel),  # Use colorFactor
+    radius = gas_samp$ZIPPOC * 10,  # Adjust radius as needed
+    stroke = FALSE, 
+    fillOpacity = 0.4,
+    label = ~paste("State: ", STATE, "<br>",
+                   "County: ", county, "<br>",
+                   "Address: ", ADDRESS, "<br>",
+                   "Zip Code: ", ZIPnew)
+  ) %>%
+  addLegend(position = "bottomright", 
+            colors = service_palette(unique(gas_samp$service_or_fuel)),  # Use unique service_or_fuel values
+            labels = unique(gas_samp$service_or_fuel),
+            title = "Gas Stations",
+            opacity = 0.4)
+
+# Display the map
+gas_map3
+```
 
