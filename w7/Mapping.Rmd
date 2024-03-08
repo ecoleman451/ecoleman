@@ -183,11 +183,15 @@ knitr::opts_chunk$set(echo = TRUE,
 
 # Data Summary
 ## Gas Data
-  We first read in two data sets called "income" and "life" representing income and life expectancy values throughout a multitude of years. "Income" has 193 observations with 220 total variables whilst "Life" has 187 observations and 220 total variables.
+  We first read in two data sets called "gas" representing several different values having to due with gas stations in the United States. "Gas" has 72798 observations and 32 total variables.
 ```{r, comment=NA}
 gas <- read.csv("https://ecoleman451.github.io/ecoleman/w7/POC.csv")
 head(gas)
 ```
+
+# Mapping
+## Simple Leaflet Map
+  In the following map, each point represents the latitude and longitude values for a specific gas station (represented by "xcoord" and "ycoord" respectively in the "gas" data set). Hovering over each point, you will see the "State", "County", "Address", and "Zip Code" for that specific gas station. The results are below:
 ```{r, comment=NA}
  gas_samp <- gas %>% sample_n(500)
 
@@ -206,6 +210,8 @@ gas_map <- leaflet(data = gas_samp) %>%
 gas_map
 ```
 
+## Leaflet Map
+  Below, we create a slightly more better leaflet map by using the "radius" and "color" functions. Here, we have the radius fixed at 5, the color fixed at blue, and the markers as circle points instead of location markers. The map is similar to the one above in which each circle point represents a gas station. Hovering over a point will once again give the "State", "County", "Address", and "Zip Code" for that specific gas station.
 ```{r, comment=NA}
 # Create a leaflet map
 gas_map2 <- leaflet(data = gas_samp) %>%
@@ -236,6 +242,8 @@ gas_map2 <- leaflet(data = gas_samp) %>%
 gas_map2
 ```
 
+## Best Map
+ This time, we create a slightly more complex leaflet map by using the "radius" and "color" functions once again. Here, we have the radius dependent on the number of POCs (points of compromise) in a gas station's respective ZIP Code. This means that the larger a point appears on the map, the more POCs exist in that station's ZIP Code. The color is dependent on whether or not a gas station provides "Fuel", "Service Only" or "Both" fuel and services. So, each of those three categories will have a specific color, representing the services provided at a specific gas station. In the data, we do not get any gas stations that provide "Service Only", so only the categories "Fuel" and "Both" will appear on the map. The map is similar to the previous maps above in which each circle point represents a gas station. Hovering over a point will once again give the "State", "County", "Address", and "Zip Code" for that specific gas station.
 ```{r, comment=NA}
 # Create a color palette based on service_or_fuel values
 service_palette <- colorFactor(palette = "Set1", domain = gas_samp$service_or_fuel)
