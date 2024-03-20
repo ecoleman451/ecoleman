@@ -181,8 +181,8 @@ knitr::opts_chunk$set(echo = TRUE,
                       comment = NA)
 ```
 
-# Data Summary
-## Gas Data
+# Gas Data
+## Reading in Data
   We first read in two data sets called "gas" representing several different values having to due with gas stations in the United States. "Gas" has 72798 observations and 32 total variables.
 ```{r, comment=NA}
 gas <- read.csv("https://ecoleman451.github.io/ecoleman/w7/POC.csv")
@@ -274,3 +274,66 @@ gas_map3 <- leaflet(data = gas_samp) %>%
 gas_map3
 ```
 
+
+# Philly Crime Data
+## Reading in Data
+  We first read in two data sets called "philly" representing several different values having to due with crimes that have occurred in the Philadelphia area since 2015. "Philly" has 15520 observations and 18 total variables.
+```{r, comment=NA}
+philly <- read.csv("https://ecoleman451.github.io/ecoleman/w7/PhillyCrimeSince2015.csv")
+head(philly)
+```
+## Convert Date Variable to Date Format and Subset
+  We want to only have 2023 data in our final subset for our map. Since there doesn't exist a variable for year, we have to create one using the variable date that already exists in the dataset. Once we have our Year variable, we can easily subset the data to focus only on 2023 data. Now, our new data set has 1666 observations and 19 variables, now including Year.
+```{r, comment = NA}
+# Convert date variable to date format
+philly$date <- as.Date(philly$date, format = "%m/%d/%Y %H:%M")
+
+# Extract year from date variable
+philly$year <- format(philly$date, "%Y")
+
+philly <- subset(philly, year=="2023")
+head(philly)
+```
+
+## Mapping
+  Now, we can create a leaflet map looking at fatal versus non-fatal crimes that occured in Philadelphia in the year 2023 by using the "color" function once again. The color is dependent on whether or not a crime was labeled as "Fatal" or "Nonfatal". So, each category will have a specific color, representing the type of crime (fatal vs. nonfatal) that occurred at the time. The map is similar to the previous maps above in which each circle point represents a specific crime. Hovering over a point will give the "Neighborhood", "Date", "Race", and "Sex", "Age", and "Street" for that specific crime.
+```{r, comment=NA}
+library(leaflet)
+library(dplyr)
+# Create color palette for fatal and non-fatal crimes
+fatal <- "red"
+non_fatal <- "blue"
+
+# Create leaflet map
+map <- leaflet(philly) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    ~lng, ~lat,
+    color = ifelse(philly$fatal == "Fatal", fatal, non_fatal),
+    radius = 5,
+    label = ~paste("Neighborhood: ", neighborhood,
+                   "Date: ", date,
+                   "Race: ", race,
+                   "Sex: ", sex,
+                   "Age: ", age,
+                   "Street: ", street_name),
+    labelOptions = labelOptions(
+      direction = "auto"
+    )
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    colors = c(fatal, non_fatal),
+    labels = c("Fatal", "Non-Fatal"),
+    title = "Crime Type"
+  ) %>%
+  addScaleBar() %>%
+  addControl(
+    html = "<h4>Philadelphia Crime Locations (2015-2024)</h4>",
+    position = "topright"
+  )
+
+# Display the map
+map
+```
+  Eyeballing the map, we can see that there seems to be a significant amount more of non-fatal crimes versus fatal crimes. Further analysis would be needed to confirm this, of course.
