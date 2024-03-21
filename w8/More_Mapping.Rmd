@@ -188,15 +188,21 @@ knitr::opts_chunk$set(echo = TRUE,
 # Philly Crime Data
 ## Reading in Data
   We first read in two data sets called "philly" representing several different values having to due with crimes that have occurred in the Philadelphia area since 2015. "Philly" has 15520 observations and 18 total variables.
-```{r, comment=NA}
+```{r, comment=NA, results=FALSE}
 philly  <- na.omit(st_read("https://pengdsci.github.io/STA553VIZ/w08/PhillyShootings.geojson"))
-head(philly)
+phillyNeighbor  <- st_read("https://pengdsci.github.io/STA553VIZ/w08/Neighborhoods_Philadelphia.geojson")
 ```
+
+## Data Summaries
+```{r}
+head(philly)
+head(phillyNeighbor)
+```
+
 
 ## Mapping
   Now, we can create a leaflet map looking at fatal versus non-fatal crimes that occured in Philadelphia in the year 2023 by using the "color" function once again. The color is dependent on whether or not a crime was labeled as "Fatal" or "Nonfatal". So, each category will have a specific color, representing the type of crime (fatal vs. nonfatal) that occurred at the time. The map is similar to the previous maps above in which each circle point represents a specific crime. Hovering over a point will give the "Neighborhood", "Date", "Race", and "Sex", "Age", and "Street" for that specific crime.
 ```{r, comment=NA}
-phillyNeighbor  <- st_read("https://pengdsci.github.io/STA553VIZ/w08/Neighborhoods_Philadelphia.geojson")
 library(leaflet)
 library(sf)
 library(htmltools)
@@ -218,14 +224,14 @@ map <- leaflet(philly) %>%
   addCircleMarkers(
     ~point_x, ~point_y,
     color = ifelse(philly$fatal == 1, fatal_color, non_fatal_color),
-    radius = 5,
-    label = ~paste("Object ID: ", philly$objectid,
-        "Year: ", philly$year,
-        "Race: ", philly$race,
-        "Sex: ", philly$sex,
-        "Age: ", philly$age,
-        "Wound: ", philly$wound,
-        "Location: ", philly$location),
+   radius = 5,
+    popup = ~paste("Object ID: ", objectid,
+                   "Year: ", year,
+                   "Race: ", race,
+                   "Sex: ", sex,
+                   "Age: ", age,
+                   "Wound: ", wound,
+                   "Location: ", location),
     labelOptions = labelOptions(
       direction = "auto"
     )
