@@ -1,0 +1,245 @@
+---
+title: "More Mapping"
+author: "Edward Coleman"
+date: "West Chester University"
+output:
+  html_document: 
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    theme: lumen
+editor_options:
+  chunk_output_type: inline
+---
+
+<style type="text/css">
+
+div#TOC li {
+    list-style:none;
+    background-color:lightgray;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #780c0c;
+}
+
+h1.title {
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+  font-variant-caps: normal;
+}
+h4.author { 
+    font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { 
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { 
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    font-weight: bold;
+    text-align: center;
+}
+h2 { 
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { 
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    font-weight: bold;
+    text-align: left;
+}
+
+h4 {
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+
+
+/* Tab features */
+.nav>li>a {
+    position: relative;
+    display: block;
+    padding: 2px 15px;
+    color: #990000;
+}
+.nav-pills>li.active>a, .nav-pills>li.active>a:hover, .nav-pills>li.active>a:focus {
+    color: #ffffff;
+    background-color: #990000;
+}
+/*
+nav-pills>li:nth-child(2) {
+    background: green;
+ }
+ */
+</style>
+
+```{r setup, include=FALSE, comment=NA}
+options(repos = list(CRAN="http://cran.rstudio.com/"))
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("cowplot")) {
+   install.packages("cowplot")
+   library(cowplot)
+}
+if (!require("latex2exp")) {
+   install.packages("latex2exp")
+   library(latex2exp)
+}
+if (!require("plotly")) {
+   install.packages("plotly")
+   library(plotly)
+}
+if (!require("gapminder")) {
+   install.packages("gapminder")
+   library(gapminder)
+}
+if (!require("png")) {
+    install.packages("png")    
+    library("png")
+}
+if (!require("RCurl")) {
+    install.packages("RCurl")    
+    library("RCurl")
+}
+if (!require("colourpicker")) {
+    install.packages("colourpicker")              
+    library("colourpicker")
+}
+if (!require("gganimate")) {
+    install.packages("gganimate")              
+    library("gganimate")
+}
+if (!require("gifski")) {
+    install.packages("gifski")              
+    library("gifski")
+}
+if (!require("magick")) {
+    install.packages("magick")              
+    library("magick")
+}
+if (!require("grDevices")) {
+    install.packages("grDevices")              
+    library("grDevices")
+}
+if (!require("jpeg")) {
+    install.packages("jpeg")              
+    library("jpeg")
+}
+if (!require("ggridges")) {
+    install.packages("ggridges")              
+    library("ggridges")
+}
+if (!require("plyr")) {
+    install.packages("plyr")              
+    library("plyr")
+}
+if (!require("ggiraph")) {
+    install.packages("ggiraph")              
+    library("ggiraph")
+}
+if (!require("highcharter")) {
+    install.packages("highcharter")              
+    library("highcharter")
+}
+if (!require("forecast")) {
+    install.packages("forecast")              
+    library("forecast")
+}
+if (!require("leaflet")) {
+    install.packages("leaflet")              
+    library("leaflet")
+}
+## 
+knitr::opts_chunk$set(echo = TRUE,       
+                      warning = FALSE,   
+                      result = TRUE,   
+                      message = FALSE,
+                      comment = NA)
+```
+
+# Philly Crime Data
+## Reading in Data
+  We first read in two data sets called "philly" representing several different values having to due with crimes that have occurred in the Philadelphia area since 2015. "Philly" has 15520 observations and 18 total variables.
+```{r, comment=NA}
+philly <- read.csv("https://ecoleman451.github.io/ecoleman/w7/PhillyCrimeSince2015.csv")
+head(philly)
+```
+## Convert Date Variable to Date Format and Subset
+  We want to only have 2023 data in our final subset for our map. Since there doesn't exist a variable for year, we have to create one using the variable date that already exists in the dataset. Once we have our Year variable, we can easily subset the data to focus only on 2023 data. Now, our new data set has 1666 observations and 19 variables, now including Year.
+```{r, comment = NA}
+# Convert date variable to date format
+philly$date <- as.Date(philly$date, format = "%m/%d/%Y %H:%M")
+
+# Extract year from date variable
+philly$year <- format(philly$date, "%Y")
+
+philly <- subset(philly, year=="2023")
+head(philly)
+```
+
+## Mapping
+  Now, we can create a leaflet map looking at fatal versus non-fatal crimes that occured in Philadelphia in the year 2023 by using the "color" function once again. The color is dependent on whether or not a crime was labeled as "Fatal" or "Nonfatal". So, each category will have a specific color, representing the type of crime (fatal vs. nonfatal) that occurred at the time. The map is similar to the previous maps above in which each circle point represents a specific crime. Hovering over a point will give the "Neighborhood", "Date", "Race", and "Sex", "Age", and "Street" for that specific crime.
+```{r, comment=NA}
+library(leaflet)
+library(dplyr)
+# Create color palette for fatal and non-fatal crimes
+fatal <- "red"
+non_fatal <- "blue"
+
+# Create leaflet map
+map <- leaflet(philly) %>%
+  addTiles() %>%
+  addCircleMarkers(
+    ~lng, ~lat,
+    color = ifelse(philly$fatal == "Fatal", fatal, non_fatal),
+    radius = 5,
+    label = ~paste("Neighborhood: ", neighborhood,
+                   "Date: ", date,
+                   "Race: ", race,
+                   "Sex: ", sex,
+                   "Age: ", age,
+                   "Street: ", street_name),
+    labelOptions = labelOptions(
+      direction = "auto"
+    )
+  ) %>%
+  addLegend(
+    position = "bottomright",
+    colors = c(fatal, non_fatal),
+    labels = c("Fatal", "Non-Fatal"),
+    title = "Crime Type"
+  ) %>%
+  addScaleBar() %>%
+  addControl(
+    html = "<h4>Philadelphia Crime Locations (2015-2024)</h4>",
+    position = "topright"
+  )
+
+# Display the map
+map
+```
+
