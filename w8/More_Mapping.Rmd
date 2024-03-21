@@ -173,6 +173,10 @@ if (!require("leaflet")) {
     install.packages("leaflet")              
     library("leaflet")
 }
+if (!require("sf")) {
+    install.packages("sf")              
+    library("sf")
+}
 ## 
 knitr::opts_chunk$set(echo = TRUE,       
                       warning = FALSE,   
@@ -185,51 +189,50 @@ knitr::opts_chunk$set(echo = TRUE,
 ## Reading in Data
   We first read in two data sets called "philly" representing several different values having to due with crimes that have occurred in the Philadelphia area since 2015. "Philly" has 15520 observations and 18 total variables.
 ```{r, comment=NA}
-philly <- read.csv("https://ecoleman451.github.io/ecoleman/w7/PhillyCrimeSince2015.csv")
-head(philly)
-```
-## Convert Date Variable to Date Format and Subset
-  We want to only have 2023 data in our final subset for our map. Since there doesn't exist a variable for year, we have to create one using the variable date that already exists in the dataset. Once we have our Year variable, we can easily subset the data to focus only on 2023 data. Now, our new data set has 1666 observations and 19 variables, now including Year.
-```{r, comment = NA}
-# Convert date variable to date format
-philly$date <- as.Date(philly$date, format = "%m/%d/%Y %H:%M")
-
-# Extract year from date variable
-philly$year <- format(philly$date, "%Y")
-
-philly <- subset(philly, year=="2023")
+philly  <- na.omit(st_read("https://pengdsci.github.io/STA553VIZ/w08/PhillyShootings.geojson"))
 head(philly)
 ```
 
 ## Mapping
   Now, we can create a leaflet map looking at fatal versus non-fatal crimes that occured in Philadelphia in the year 2023 by using the "color" function once again. The color is dependent on whether or not a crime was labeled as "Fatal" or "Nonfatal". So, each category will have a specific color, representing the type of crime (fatal vs. nonfatal) that occurred at the time. The map is similar to the previous maps above in which each circle point represents a specific crime. Hovering over a point will give the "Neighborhood", "Date", "Race", and "Sex", "Age", and "Street" for that specific crime.
 ```{r, comment=NA}
+phillyNeighbor  <- st_read("https://pengdsci.github.io/STA553VIZ/w08/Neighborhoods_Philadelphia.geojson")
 library(leaflet)
+library(sf)
+library(htmltools)
 library(dplyr)
-# Create color palette for fatal and non-fatal crimes
-fatal <- "red"
-non_fatal <- "blue"
+## Create sf object
+philly_sf <- st_as_sf(philly, coords = c("point_x", "point_y"), crs = 4326)
 
-# Create leaflet map
+# Define color palette for fatal and non-fatal crimes
+pal <- leaflet::colorFactor(
+  palette = c("red", "gold"), 
+  domain = c("Fatal", "Non-Fatal")
+)
+
+fatal_color <- "red"
+non_fatal_color <- "gold"
+
 map <- leaflet(philly) %>%
   addTiles() %>%
   addCircleMarkers(
-    ~lng, ~lat,
-    color = ifelse(philly$fatal == "Fatal", fatal, non_fatal),
+    ~point_x, ~point_y,
+    color = ifelse(philly$fatal == 1, fatal_color, non_fatal_color),
     radius = 5,
-    label = ~paste("Neighborhood: ", neighborhood,
-                   "Date: ", date,
-                   "Race: ", race,
-                   "Sex: ", sex,
-                   "Age: ", age,
-                   "Street: ", street_name),
+    label = ~paste("Object ID: ", philly$objectid,
+        "Year: ", philly$year,
+        "Race: ", philly$race,
+        "Sex: ", philly$sex,
+        "Age: ", philly$age,
+        "Wound: ", philly$wound,
+        "Location: ", philly$location),
     labelOptions = labelOptions(
       direction = "auto"
     )
   ) %>%
   addLegend(
     position = "bottomright",
-    colors = c(fatal, non_fatal),
+    colors = c(fatal_color, non_fatal_color),
     labels = c("Fatal", "Non-Fatal"),
     title = "Crime Type"
   ) %>%
@@ -237,9 +240,29 @@ map <- leaflet(philly) %>%
   addControl(
     html = "<h4>Philadelphia Crime Locations (2015-2024)</h4>",
     position = "topright"
-  )
+  )%>%
+  setView(lng = -75.1527, lat = 39.9707, zoom = 11) %>%
+  addProviderTiles(providers$Esri.WorldGrayCanvas) %>%
+    addPolygons(data = phillyNeighbor,
+              color = 'skyblue',
+              weight = 1)  %>%
+  addCircleMarkers(data = philly_sf,
+                   radius = 5,
+                   color = ~pal(fatal),
+                   stroke = FALSE, 
+                   fillOpacity = 0.5,
+                   clusterOptions = markerClusterOptions(maxClusterRadius = 40)) %>%
+  # Adding images to the map
+  addMarkers(lng = -75.1652, lat = 39.9526, popup = '<img src="https://pengdsci.github.io/STA553VIZ/w08/PhillyCityHall.jpg" width="200" height="200">') %>%
+  # HTML style for the map title
+  addControl(HTML('<div class="leaflet-control.map-title">Philadelphia Crime Locations (2015-2024)</div>'), position = "topright") %>%
+  addLayersControl(baseGroups = c('Dark', 'DarkLabel', 'Esri'),
+                   overlayGroups = c("Crime Data"),
+                   options = layersControlOptions(collapsed = TRUE))
+  
 
 # Display the map
 map
 ```
+
 
