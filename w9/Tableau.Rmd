@@ -93,7 +93,11 @@ knitr::opts_chunk$set(echo = TRUE,
 \
 
 # Working Data and Data Loading
-The Hawks data set was collected by students from Cornell College. It is built in the R library {Stat2Data}. I also made a copy and posted it at <https://raw.githubusercontent.com/pengdsci/sta553/main/Tableau/hawks.csv>. You can download it and save it to a folder on your machine.
+Our initial dataset contains Presidential election results from the years 2000, 2004, 2008, 2012, 2016, and 2020. The data, called "election", has 72617 observations and 12 variables containing information for every state, county, election, candidate winner in each county, and total candidate votes. 
+
+Some data cleaning was necessary in order to fix the issue of the county FIPS code, which represents the specific 5 digit code assigned to every county in the United States. The data set initially had some codes containing 4 digits instead of 4 if there contained a "0" as the first digit. For example, Autauga, Alabama's FIPS code "01001" is recorded as "1001" in the set. This was able to be done through the excel function "TEXT" and was done prior to reading the data in as the set called "election".
+
+Using this dataset called "election", we want to split the data so that we have information focusing only from the county level and a dataset for the state level. Both sets include a new variable called "party_percentage" which calculates the percentage of people that picked the winning party in the sets' respective state/county - "county_data" containing election results by county and "state_data" containing election results by state. Both sets also keep only the winning party in the dataset.
 ```{r}
 # Load the required library
 library(dplyr)
@@ -127,21 +131,22 @@ write.csv(state_data, file = "state_level_data.csv", row.names = FALSE)
 ```
 
 # Choropleth Map
+Now that we've created the data set called "county_data" - focusing solely on election results (specifically the winning party) by county level, we can create an interactive Choropleth Map using the data visualization tool Tableau to display presidential election results at the county level. There are two different colors assigned to represent the major political parties (Democrat & Republican) and the map shades in every county to reflect which political party was the winner in a specific election year. A filter is set to change the year(s) in the interactive map. Hover text is also included which appears when hovering over a specific county on the map, containing information for "year", "state", "party", "candidatevotes", & "party_percentage" for the respective county being hovered over.
 \
 <table border = 0 bordercolor="darkgreen" bgcolor='#f6f6f6'  width=100%  align = center>
 <tr>
 <td>
-<div class='tableauPlaceholder' id='viz1712178344816' style='position: relative'><noscript><a href='#'><img alt='Choropleth Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Choropleth_Map_17121775293760&#47;ChoroplethMap&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Choropleth_Map_17121775293760&#47;ChoroplethMap' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Choropleth_Map_17121775293760&#47;ChoroplethMap&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                
-<script type='text/javascript'>                    
-var divElement = document.getElementById('viz1712178344816');                    
-var vizElement = divElement.getElementsByTagName('object')[0];                    
-vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    
-var scriptElement = document.createElement('script');                    
-scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
-vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+<div class='tableauPlaceholder' id='viz1712195282624' style='position: relative'><noscript><a href='#'><img alt='Choropleth Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Choropleth_Map_Final&#47;Sheet1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Choropleth_Map_Final&#47;Sheet1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Choropleth_Map_Final&#47;Sheet1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                
+<script type='text/javascript'>                    var divElement = document.getElementById('viz1712195282624');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                
 </script>
 </td>
 </tr>
 </table>            
 \
+
+
+
+
+
+
 
