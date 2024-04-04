@@ -1,0 +1,147 @@
+---
+title: "Tableau (Choropleth Map)"
+author: "Edward Coleman"
+date: "West Chester University "
+output:
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: yes
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    number_sections: yes
+    theme: readable
+---
+<style type="text/css">
+
+div#TOC li {
+    list-style:none;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+}
+h1.title {
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: center;
+}
+h2 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+img {
+  border: 1px solid #555;
+}
+</style>
+
+```{r setup, include=FALSE}
+# code chunk specifies whether the R code, warnings, and output 
+# will be included in the output files.
+if (!require("Stat2Data")) {
+   install.packages("Stat2Data")
+   library(Stat2Data)
+}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+
+knitr::opts_chunk$set(echo = TRUE,       
+                      warning = FALSE,   
+                      result = TRUE,   
+                      message = FALSE,
+                      comment = NA)
+```
+
+\
+
+\
+
+# Working Data and Data Loading
+The Hawks data set was collected by students from Cornell College. It is built in the R library {Stat2Data}. I also made a copy and posted it at <https://raw.githubusercontent.com/pengdsci/sta553/main/Tableau/hawks.csv>. You can download it and save it to a folder on your machine.
+```{r}
+# Load the required library
+library(dplyr)
+
+# Read the data
+election <- read.csv("https://ecoleman451.github.io/ecoleman/w9/PresidentialElection2000To2020.csv")
+
+# County-level Data
+county_data <- election %>%
+  group_by(year, state, county_name) %>%
+  mutate(party_percentage = candidatevotes / sum(candidatevotes) * 100) %>%
+  filter(party_percentage == max(party_percentage)) %>%
+  select(year, state, county_fips, party, candidate, candidatevotes, party_percentage)
+
+# State-level Data
+state_data <- election %>%
+  group_by(year, state) %>%
+  mutate(party_percentage = candidatevotes / sum(candidatevotes) * 100) %>%
+  filter(party_percentage == max(party_percentage)) %>%
+  select(year, state, party, candidate, candidatevotes, party_percentage)
+
+# Print the first few rows of each subset
+head(county_data)
+head(state_data)
+
+# Save county-level data to a new CSV file
+write.csv(county_data, file = "county_level_data.csv", row.names = FALSE)
+
+# Save state-level data to a new CSV file
+write.csv(state_data, file = "state_level_data.csv", row.names = FALSE)
+```
+
+# Choropleth Map
+\
+<table border = 0 bordercolor="darkgreen" bgcolor='#f6f6f6'  width=100%  align = center>
+<tr>
+<td>
+<div class='tableauPlaceholder' id='viz1712178344816' style='position: relative'><noscript><a href='#'><img alt='Choropleth Map ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Choropleth_Map_17121775293760&#47;ChoroplethMap&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Choropleth_Map_17121775293760&#47;ChoroplethMap' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ch&#47;Choropleth_Map_17121775293760&#47;ChoroplethMap&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /></object></div>                
+<script type='text/javascript'>                    
+var divElement = document.getElementById('viz1712178344816');                    
+var vizElement = divElement.getElementsByTagName('object')[0];                    
+vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';                    
+var scriptElement = document.createElement('script');                    
+scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    
+vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+</script>
+</td>
+</tr>
+</table>            
+\
+
