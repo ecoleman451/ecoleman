@@ -1,0 +1,257 @@
+---
+title: "Tableau Dashboard"
+author: "Edward Coleman"
+date: "West Chester University"
+output: 
+  html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: no
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    number_sections: yes
+    theme: readable
+---
+      
+<style type="text/css">
+div#TOC li {
+    list-style:none;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+}
+h1.title {
+  font-size: 24px;
+  color: DarkRed;
+  text-align: center;
+}
+h4.author { 
+  /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { 
+  /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { 
+    /* Header 3 - and the author and data headers use this too  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: center;
+}
+h2 { 
+    /* Header 3 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+h3 { 
+    /* Header 3 - and the author and data headers use this too  */
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    font-face: bold;
+    text-align: left;
+}
+h4 { 
+    /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+   /* center maps using chunk option: fig.align='center' */
+.html-widget {
+    margin: auto;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,       
+                      warning = FALSE,   
+                      result = TRUE,   
+                      message = FALSE,
+                      comment = NA)
+```
+
+\
+
+## Superstore Profits and Sales
+
+The following dashboard was designed based on the following considerations:
+
+**Users/Clients**: sales manager or similar roles
+
+**Key Information**: Look at the process generation from different perspectives and identify the patterns for making business decisions. For example,  
+
+* Sales KPI
+* Total revenue (profit)
+* Total sales by time period
+* Revenue per sale
+* Revenue by product types
+* Market penetration
+* Revenue generation by customer segments
+* Average customer lifetime
+* Customer satisfaction (net promotor scores, etc.)
+* Number of sales lost to competition
+* Revenue by territory (regions, customer segments, etc.)
+* Revenue by market
+* Ratio of selling cost and revenue generation
+* and more.....
+
+
+<table border = 0 bordercolor="darkgreen" bgcolor='#f6f6f6'  width=110%  align = center>
+<tr>
+<td>
+
+<div class='tableauPlaceholder' id='viz1711934771348' style='position: relative'>
+
+<noscript><a href='#'><img alt='Sales and Profit of A Stationery Superstore ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Su&#47;SuperstoreDataStoryPoint&#47;Dashboard&#47;1_rss.png' style='border: none' /></a>
+
+</noscript>
+<object class='tableauViz'  style='display:none;'>
+<param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+<param name='embed_code_version' value='3' /> 
+<param name='site_root' value='' />
+<param name='name' value='SuperstoreDataStoryPoint&#47;Dashboard' />
+<param name='tabs' value='no' /><param name='toolbar' value='yes' />
+<param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Su&#47;SuperstoreDataStoryPoint&#47;Dashboard&#47;1.png' /> 
+<param name='animate_transition' value='yes' />
+<param name='display_static_image' value='yes' />
+<param name='display_spinner' value='yes' />
+<param name='display_overlay' value='yes' />
+<param name='display_count' value='yes' />
+<param name='language' value='en-US' />
+<param name='filter' value='publish=yes' />
+</object>
+
+</div>                
+
+<script type='text/javascript'>                    
+var divElement = document.getElementById('viz1711934771348');                    
+var vizElement = divElement.getElementsByTagName('object')[0];                    
+if ( divElement.offsetWidth > 800 ) { vizElement.style.minWidth='420px';vizElement.style.maxWidth='1550px';vizElement.style.width='100%';vizElement.style.minHeight='487px';vizElement.style.maxHeight='1087px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.minWidth='420px';vizElement.style.maxWidth='1550px';vizElement.style.width='100%';vizElement.style.minHeight='487px';vizElement.style.maxHeight='1087px';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1827px';}                     
+var scriptElement = document.createElement('script');                    
+scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+</script>
+
+</td>
+</tr>
+</table>
+
+\
+
+\
+
+**Critiques and Recommendations for Improvement**
+\
+
+* Selection of information for visualization
+* Design perspectives
+  + individual charts
+  + Overall design of dashboard (layout)
+  + orchestration of individual charts
+  + design aesthetics
+
+
+
+
+# Tableau Story Points
+
+Tableau can create a form of presentation of the existing individual chart so we can tell the story based on the individual Tableau charts. In terms of design, it is relatively less challenging since the `story point` uses a sequence of logically connected individual Tableau visual sheets to tell a data story. 
+
+
+Although a little design effort is needed for the story point, the same level of significant design effort needs to be put into individual visual sheets.
+
+The following is an incomplete sample of a story point based on the previous dashboard. Each individual visual sheet should have a brief and descriptive caption about the information.
+
+
+\
+
+<table border = 0 bordercolor="darkgreen" bgcolor='#f6f6f6'  width=110%  align = center>
+<tr>
+<td>
+
+<div class='tableauPlaceholder' id='viz1711798810589' style='position: relative'>
+<noscript>
+<a href='#'><img alt='StoryPoint ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Su&#47;SuperstoreDataStoryPoint&#47;StoryPoint&#47;1_rss.png' style='border: none' /></a>
+</noscript>
+
+<object class='tableauViz'  style='display:none;'>
+<param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> 
+<param name='embed_code_version' value='3' /> 
+<param name='site_root' value='' />
+<param name='name' value='SuperstoreDataStoryPoint&#47;StoryPoint' />
+<param name='tabs' value='no' />
+<param name='toolbar' value='yes' />
+<param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Su&#47;SuperstoreDataStoryPoint&#47;StoryPoint&#47;1.png' /> 
+<param name='animate_transition' value='yes' />
+<param name='display_static_image' value='yes' />
+<param name='display_spinner' value='yes' />
+<param name='display_overlay' value='yes' />
+<param name='display_count' value='yes' />
+<param name='language' value='en-US' />
+<param name='filter' value='publish=yes' />
+</object></div>                
+
+<script type='text/javascript'>                   
+var divElement = document.getElementById('viz1711798810589');                    
+var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='916px';vizElement.style.height='691px';                    
+var scriptElement = document.createElement('script');                    
+scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);               
+</script>
+</td>
+</tr>
+</table>
+
+
+
+# Assignments of This Week
+
+This assignment focuses on Tableau dashboards and story points. You can choose a data set that has both numerical and categorical variables so you can create several charts such as histograms, scatter plots, frequency tables, pie charts, etc. using both types of variables. 
+
+
+
+## The Minimum Requirements
+
+I will not give you a data set for this assignment. You can find a data set from any sources including my project data page (<https://pengdsci.github.io/datasets/>) that meets the following requirement.
+
+
+1. Choose a data set with at least two numerical variables so you can construct a histogram and scatter plots.
+
+2. The data set should have at least three categorical variables so you can create pie charts, bar plots, etc.
+
+3. You are expected to use at least one filter that updates all charts in the dashboard (reactive dashboard).
+
+4. Give a descriptive title and axis labels to individual charts and dashboards respectively.
+
+5. Adjust the margins of the individual chart and make the dashboard tidy and informative.
+
+6. Create a story point and provide informative captions for storytelling.
+
+7. (optional) If you have geo-information in your data set, you can create maps including animated maps.
+
+8. (optional) If you want to use more advanced topics such as derived variables and parameters to enhance your dashboard, you are very welcome to do so.
+
+
+## Submission Requirements:
+
+1. Publish your dashboard and story point on the Tableau Public server.
+
+2. Write a report using an RMD document to include both the Tableau dashboard and story-point on the same web page.
+
+3. You publish the report on either RPubs or placed it in your GitHub repository. 
+
+4. update your online CV with the link to your assignment (optional).
+
+5. Submit the URL of your HTML report generated from RMD and make sure your RMD source is downloadable from your HTML report.
+
