@@ -85,16 +85,38 @@ knitr::opts_chunk$set(echo = TRUE,
 
 \
 
-# Superstore Profits and Sales
+# Mushroom Data
+The mushroom dataset, comprising 61,069 observations and 17 variables, provides comprehensive information on various attributes of sampled mushrooms. These attributes include cap diameter, stem width, stem height, gill color, stem color, and the categorical class type to which each mushroom belongs. The dataset serves as a valuable resource for studying mushroom characteristics and exploring patterns within different mushroom species.
+```{r}
+# Load the required library
+library(dplyr)
 
-The following dashboard was designed based on the following considerations:
+# Read the data
+mushroom <- read.csv("https://ecoleman451.github.io/ecoleman/w10/mushroom-data.txt")
+head(mushroom)
+```
+The following dashboard and story points were designed based on the following considerations:
+  
+  Season Filter: Each sheet in the dashboard and story point has a Season filter, offering viewers the flexibility to delve into data specific to different seasons, facilitating seasonal analysis and comparison.
+
+  Table Chart: Average Cap Diameter per Class by Habitat: This chart provides a detailed insight into the average cap diameter across different classes of mushrooms, categorized by habitat. By color-coding each habitat, viewers can easily discern trends and patterns associated with environmental conditions.
+
+  Table Chart: Average Measurements Across Classes by Stem Color: Offering a comprehensive overview, this table chart displays average measurements (such as stem width and height) across various mushroom classes, distinguished by stem color. The color-coded values enable viewers to identify associations between mushroom classes and their physical attributes.
+
+  Histogram: Total Stem Height Distribution by Cap Diameter and Cap Shape: This histogram offers a visual representation of the distribution of total stem height, considering both cap diameter and cap shape. By color-coding each cap shape, viewers can gain insights into how stem height varies across different cap shapes and sizes.
+
+  Dual Lines Chart: Average Stem Width and Stem Height Across Cap Diameter Lengths: This chart presents an in-depth analysis of the average stem width and stem height across different lengths of cap diameter. By visualizing these relationships simultaneously, viewers can discern correlations and variations between cap diameter and stem dimensions.
+
+  Scatter Plot: Average Stem Width vs. Average Stem Height with Cap Diameter Color Dependency: This scatter plot provides a comprehensive view of the relationship between average stem width and height, with cap diameter represented by color.
+
+  By incorporating visualizations and interactive features, this dashboard and its story points aim to empower viewers with the tools and insights for data analysis.
 
 <table border = 0 bordercolor="darkgreen" bgcolor='#f6f6f6'  width=110%  align = center>
 <tr>
 <td>
 
-<div class='tableauPlaceholder' id='viz1712788899291' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;TableauDashboard_17122735392090&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='TableauDashboard_17122735392090&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;TableauDashboard_17122735392090&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                
-<script type='text/javascript'>                    var divElement = document.getElementById('viz1712788899291');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1527px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                
+<div class='tableauPlaceholder' id='viz1712792506866' style='position: relative'><noscript><a href='#'><img alt='Dashboard 1 ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;TableauStoryBoard_17127890458660&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='TableauStoryBoard_17127890458660&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ta&#47;TableauStoryBoard_17127890458660&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                
+<script type='text/javascript'>                    var divElement = document.getElementById('viz1712792506866');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='1527px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                
 </script>
 </td>
 </tr>
@@ -104,28 +126,9 @@ The following dashboard was designed based on the following considerations:
 
 \
 
-**Critiques and Recommendations for Improvement**
-\
-
-* Selection of information for visualization
-* Design perspectives
-  + individual charts
-  + Overall design of dashboard (layout)
-  + orchestration of individual charts
-  + design aesthetics
-
-
-
 
 # Tableau Story Points
-
-Tableau can create a form of presentation of the existing individual chart so we can tell the story based on the individual Tableau charts. In terms of design, it is relatively less challenging since the `story point` uses a sequence of logically connected individual Tableau visual sheets to tell a data story. 
-
-
-Although a little design effort is needed for the story point, the same level of significant design effort needs to be put into individual visual sheets.
-
-The following is an incomplete sample of a story point based on the previous dashboard. Each individual visual sheet should have a brief and descriptive caption about the information.
-
+In addition to the detailed dashboard, a complementary story point has been crafted to provide a guided narrative based on the previous dashboard's insights. Each visual sheet within the story point is accompanied by a brief caption, offering context and highlighting key findings. This approach enables viewers to explore each visual sheet independently, allowing them to draw their own conclusions and insights from the data presented. Through this structured storytelling approach, viewers can engage with the data at their own pace, uncovering patterns tailored to their interests and goals.
 
 \
 
