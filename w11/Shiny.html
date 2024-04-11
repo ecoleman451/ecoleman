@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+<meta name="author" content="Edward Coleman" />
+
+
+<title>Shiny Application</title>
+
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+
+<style type="text/css">
+#rmd-source-code {
+  display: none;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
+}
+pre code {
+  padding: 0;
+}
+</style>
+
+
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "\e258";
+  font-family: 'Glyphicons Halflings';
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div id="section-header">
+
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+<li role="separator" class="divider"></li>
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Shiny Application</h1>
+<h4 class="author">Edward Coleman</h4>
+<h4 class="date">West Chester University</h4>
+
+</div>
+
+<div id="section-TOC">
+<ul>
+<li><a href="#section-case-study-i---density-of-normal-distribution"
+id="section-toc-case-study-i---density-of-normal-distribution"><span
+class="toc-section-number">1</span> Case Study I - Density of Normal
+Distribution</a></li>
+</ul>
+</div>
+
+<style type="text/css">
+div#TOC li {
+    list-style:none;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+}
+
+h1.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: center;
+}
+h2 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+</style>
+<div id="section-case-study-i---density-of-normal-distribution"
+class="section level1" number="1">
+<h1><span class="header-section-number">1</span> Case Study I - Density
+of Normal Distribution</h1>
+<p>We revise the previous example and redesign the layout by including a
+title, a sidebar, and main panels. We place three input widgets
+requesting sample size, the population mean and standard deviation. The
+output histogram will be placed in the main panel. The following is the
+detailed code</p>
+<pre class="r"><code>library(shiny)
+setwd(&quot;C:/Users/ecole/OneDrive - West Chester University of PA/Data Visualization/Week Eleven (Shiny)&quot;)
+
+# Define UI for the app that draws a histogram ----
+ui &lt;- fluidPage(
+  withMathJax(),
+  ### Important: The following tag allows inline equations in MathJax
+  tags$div(HTML(&quot;&lt;script type=&#39;text/x-mathjax-config&#39; &gt;
+            MathJax.Hub.Config({
+            tex2jax: {inlineMath: [[&#39;$&#39;,&#39;$&#39;], [&#39;\\(&#39;,&#39;\\)&#39;]]}
+            });
+            &lt;/script &gt;
+            &quot;)),
+  ### 
+  br(), br(), 
+  wellPanel(style = &quot;background-color:#acdfe6;&quot;,  
+    # App title ----
+    titlePanel(h2(&quot;Simulating Standard Normal Distribution&quot;, align = &quot;center&quot;,
+                          style = &quot;color:navy; font-family:verdana; 
+                      font-variant: small-caps; font-weight: bold;&quot;))),
+    ##
+    # Sidebar layout with input and output definitions ----
+    sidebarLayout(    # siderbarLayout:       
+         # Sidebar panel for inputs ==&gt; the 1st parameter
+         #
+         sidebarPanel( style = &quot;background-color:#acdfe6;&quot;, 
+               # Input: Slider for the number of bins ==&gt; 2nd parameter
+               tags$div( h4(&quot;User Input Panel&quot;, align = &quot;center&quot;,
+                          style = &quot;color:darkred; font-family:verdana; 
+                      font-variant: small-caps; font-weight: bold;&quot;)),
+               #
+               br(),
+               ##
+               sliderInput(inputId = &quot;n&quot;,
+                           label = &quot;Sample size&quot;,
+                           min = 1,
+                           max = 500,
+                           value = 10),
+               # slider input: normal population mean
+               sliderInput(inputId = &quot;mu&quot;,
+                           label = &quot;Normal population mean&quot;,
+                           min = -50,
+                           max = 50,
+                           value = 0),
+               # normal population standard deviation
+               sliderInput(inputId = &quot;sigma&quot;,
+                           label = &quot;Normal population standard deviation&quot;,
+                           min = 0.1,
+                           max = 30,
+                           value = 1)),
+         # Main panel for displaying outputs ----
+         mainPanel( style = &quot;background-color:lightgray; text-align: center;&quot;, 
+              # Output: Histogram ----
+              plotOutput(outputId = &quot;distPlot&quot;)
+         )
+   ))
+# Define server logic required to draw a histogram ----
+server &lt;- function(input, output) {
+  # Histogram of the simulated normal data ----
+  # with the requested number of bins
+  output$distPlot &lt;- renderPlot({
+    # random number generation
+    norm.score &lt;- rnorm(input$n, input$mu, input$sigma)
+    ##
+    par(bg = &quot;lightgray&quot;)
+    hist(norm.score, col = &quot;cyan4&quot;, border = &quot;darkred&quot;,
+         xlab = &quot;Histogram of generated normal data&quot;,
+         main = &quot;Simulated Normal Distribution&quot;)
+      }, height = 350, width = 400 )
+  }
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)</code></pre>
+<iframe data-deferred-src="appe79dc6f2834269b2e4d2c7e73551d672/?w=&amp;__subapp__=1" width="100%" height="400" class="shiny-frame shiny-frame-deferred"></iframe>
+</div>
+
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlNoaW55IEFwcGxpY2F0aW9uIg0KYXV0aG9yOiAiRWR3YXJkIENvbGVtYW4iDQpkYXRlOiAiV2VzdCBDaGVzdGVyIFVuaXZlcnNpdHkiDQpvdXRwdXQ6DQogICBodG1sX2RvY3VtZW50OiANCiAgICB0b2M6IHllcw0KICAgIHRvY19kZXB0aDogNA0KICAgIHRvY19mbG9hdDogbm8NCiAgICBjb2RlX2ZvbGRpbmc6IGhpZGUNCiAgICBjb2RlX2Rvd25sb2FkOiB5ZXMNCiAgICBzbW9vdGhfc2Nyb2xsOiB5ZXMNCiAgICBudW1iZXJfc2VjdGlvbnM6IHllcw0KICAgIHRoZW1lOiByZWFkYWJsZQ0KcnVudGltZTogc2hpbnkNCi0tLQ0KDQo8c3R5bGUgdHlwZT0idGV4dC9jc3MiPg0KZGl2I1RPQyBsaSB7DQogICAgbGlzdC1zdHlsZTpub25lOw0KICAgIGJhY2tncm91bmQtaW1hZ2U6bm9uZTsNCiAgICBiYWNrZ3JvdW5kLXJlcGVhdDpub25lOw0KICAgIGJhY2tncm91bmQtcG9zaXRpb246MDsNCn0NCg0KaDEudGl0bGUgew0KICBmb250LXNpemU6IDI0cHg7DQogIGZvbnQtd2VpZ2h0OiBib2xkOw0KICBjb2xvcjogRGFya1JlZDsNCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KfQ0KaDQuYXV0aG9yIHsgLyogSGVhZGVyIDQgLSBhbmQgdGhlIGF1dGhvciBhbmQgZGF0YSBoZWFkZXJzIHVzZSB0aGlzIHRvbyAgKi8NCiAgICBmb250LXNpemU6IDE4cHg7DQogIGZvbnQtZmFtaWx5OiAiVGltZXMgTmV3IFJvbWFuIiwgVGltZXMsIHNlcmlmOw0KICBjb2xvcjogRGFya1JlZDsNCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KfQ0KaDQuZGF0ZSB7IC8qIEhlYWRlciA0IC0gYW5kIHRoZSBhdXRob3IgYW5kIGRhdGEgaGVhZGVycyB1c2UgdGhpcyB0b28gICovDQogIGZvbnQtc2l6ZTogMThweDsNCiAgZm9udC1mYW1pbHk6ICJUaW1lcyBOZXcgUm9tYW4iLCBUaW1lcywgc2VyaWY7DQogIGNvbG9yOiBEYXJrQmx1ZTsNCiAgdGV4dC1hbGlnbjogY2VudGVyOw0KfQ0KaDEgeyAvKiBIZWFkZXIgMyAtIGFuZCB0aGUgYXV0aG9yIGFuZCBkYXRhIGhlYWRlcnMgdXNlIHRoaXMgdG9vICAqLw0KICAgIGZvbnQtc2l6ZTogMjJweDsNCiAgICBmb250LWZhbWlseTogIlRpbWVzIE5ldyBSb21hbiIsIFRpbWVzLCBzZXJpZjsNCiAgICBjb2xvcjogZGFya3JlZDsNCiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7DQp9DQpoMiB7IC8qIEhlYWRlciAzIC0gYW5kIHRoZSBhdXRob3IgYW5kIGRhdGEgaGVhZGVycyB1c2UgdGhpcyB0b28gICovDQogICAgZm9udC1zaXplOiAxOHB4Ow0KICAgIGZvbnQtZmFtaWx5OiAiVGltZXMgTmV3IFJvbWFuIiwgVGltZXMsIHNlcmlmOw0KICAgIGNvbG9yOiBuYXZ5Ow0KICAgIHRleHQtYWxpZ246IGxlZnQ7DQp9DQoNCmgzIHsgLyogSGVhZGVyIDMgLSBhbmQgdGhlIGF1dGhvciBhbmQgZGF0YSBoZWFkZXJzIHVzZSB0aGlzIHRvbyAgKi8NCiAgICBmb250LXNpemU6IDE1cHg7DQogICAgZm9udC1mYW1pbHk6ICJUaW1lcyBOZXcgUm9tYW4iLCBUaW1lcywgc2VyaWY7DQogICAgY29sb3I6IG5hdnk7DQogICAgdGV4dC1hbGlnbjogbGVmdDsNCn0NCg0KaDQgeyAvKiBIZWFkZXIgNCAtIGFuZCB0aGUgYXV0aG9yIGFuZCBkYXRhIGhlYWRlcnMgdXNlIHRoaXMgdG9vICAqLw0KICAgIGZvbnQtc2l6ZTogMThweDsNCiAgICBmb250LWZhbWlseTogIlRpbWVzIE5ldyBSb21hbiIsIFRpbWVzLCBzZXJpZjsNCiAgICBjb2xvcjogZGFya3JlZDsNCiAgICB0ZXh0LWFsaWduOiBsZWZ0Ow0KfQ0KPC9zdHlsZT4NCg0KYGBge3Igc2V0dXAsIGluY2x1ZGU9RkFMU0V9DQppZiAoIXJlcXVpcmUoImtuaXRyIikpIHsNCiAgIGluc3RhbGwucGFja2FnZXMoImtuaXRyIikNCiAgIGxpYnJhcnkoa25pdHIpDQp9DQppZiAoIXJlcXVpcmUoInNoaW55IikpIHsNCiAgIGluc3RhbGwucGFja2FnZXMoInNoaW55IikNCiAgIGxpYnJhcnkoc2hpbnkpDQp9DQppZiAoIXJlcXVpcmUoImdncGxvdDIiKSkgew0KICAgaW5zdGFsbC5wYWNrYWdlcygiZ2dwbG90MiIpDQogICBsaWJyYXJ5KGdncGxvdDIpDQp9DQppZiAoIXJlcXVpcmUoInRpZHl2ZXJzZSIpKSB7DQogICBpbnN0YWxsLnBhY2thZ2VzKCJ0aWR5dmVyc2UiKQ0KICAgbGlicmFyeSh0aWR5dmVyc2UpDQp9DQppZiAoIXJlcXVpcmUoImRwbHlyIikpIHsNCiAgIGluc3RhbGwucGFja2FnZXMoImRwbHlyIikNCiAgIGxpYnJhcnkoZHBseXIpDQp9DQprbml0cjo6b3B0c19jaHVuayRzZXQoZWNobyA9IFRSVUUsICAgICAgIA0KICAgICAgICAgICAgICAgICAgICAgIHdhcm5pbmcgPSBGQUxTRSwgICANCiAgICAgICAgICAgICAgICAgICAgICByZXN1bHQgPSBUUlVFLCAgIA0KICAgICAgICAgICAgICAgICAgICAgIG1lc3NhZ2UgPSBGQUxTRSwNCiAgICAgICAgICAgICAgICAgICAgICBmaWcuYWxpZ249J2NlbnRlcicsIA0KICAgICAgICAgICAgICAgICAgICAgIGZpZy5wb3MgPSAnaHQnKQ0KIyMjIFRoZSBmb2xsb3dpbmcgZnVuY3Rpb25zIGVuYWJsZQ0KIyMjIHNoaW55IGFwcHMgdG8gZGlzcGxheSBpbnNpZGUgUk1hcmtkb3duIGRvY3VtZW50Lg0KIyMjIHlvdSBkb24ndCBuZWVkIHRvIHVuZGVyc3RhbmQgdGhlc2UgZnVuY3Rpb25zLg0KYGBgDQoNCg0KDQojIENhc2UgU3R1ZHkgSSAgLSBEZW5zaXR5IG9mIE5vcm1hbCBEaXN0cmlidXRpb24NCldlIHJldmlzZSB0aGUgcHJldmlvdXMgZXhhbXBsZSBhbmQgcmVkZXNpZ24gdGhlIGxheW91dCBieSBpbmNsdWRpbmcgYSB0aXRsZSwgYSBzaWRlYmFyLCBhbmQgbWFpbiBwYW5lbHMuIFdlIHBsYWNlIHRocmVlIGlucHV0IHdpZGdldHMgcmVxdWVzdGluZyBzYW1wbGUgc2l6ZSwgdGhlIHBvcHVsYXRpb24gbWVhbiBhbmQgc3RhbmRhcmQgZGV2aWF0aW9uLiBUaGUgb3V0cHV0IGhpc3RvZ3JhbSB3aWxsIGJlIHBsYWNlZCBpbiB0aGUgbWFpbiBwYW5lbC4gVGhlIGZvbGxvd2luZyBpcyB0aGUgZGV0YWlsZWQgY29kZQ0KDQpgYGB7cn0NCmxpYnJhcnkoc2hpbnkpDQpzZXR3ZCgiQzovVXNlcnMvZWNvbGUvT25lRHJpdmUgLSBXZXN0IENoZXN0ZXIgVW5pdmVyc2l0eSBvZiBQQS9EYXRhIFZpc3VhbGl6YXRpb24vV2VlayBFbGV2ZW4gKFNoaW55KSIpDQoNCiMgRGVmaW5lIFVJIGZvciB0aGUgYXBwIHRoYXQgZHJhd3MgYSBoaXN0b2dyYW0gLS0tLQ0KdWkgPC0gZmx1aWRQYWdlKA0KICB3aXRoTWF0aEpheCgpLA0KICAjIyMgSW1wb3J0YW50OiBUaGUgZm9sbG93aW5nIHRhZyBhbGxvd3MgaW5saW5lIGVxdWF0aW9ucyBpbiBNYXRoSmF4DQogIHRhZ3MkZGl2KEhUTUwoIjxzY3JpcHQgdHlwZT0ndGV4dC94LW1hdGhqYXgtY29uZmlnJyA+DQogICAgICAgICAgICBNYXRoSmF4Lkh1Yi5Db25maWcoew0KICAgICAgICAgICAgdGV4MmpheDoge2lubGluZU1hdGg6IFtbJyQnLCckJ10sIFsnXFwoJywnXFwpJ11dfQ0KICAgICAgICAgICAgfSk7DQogICAgICAgICAgICA8L3NjcmlwdCA+DQogICAgICAgICAgICAiKSksDQogICMjIyANCiAgYnIoKSwgYnIoKSwgDQogIHdlbGxQYW5lbChzdHlsZSA9ICJiYWNrZ3JvdW5kLWNvbG9yOiNhY2RmZTY7IiwgIA0KICAgICMgQXBwIHRpdGxlIC0tLS0NCiAgICB0aXRsZVBhbmVsKGgyKCJTaW11bGF0aW5nIFN0YW5kYXJkIE5vcm1hbCBEaXN0cmlidXRpb24iLCBhbGlnbiA9ICJjZW50ZXIiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICBzdHlsZSA9ICJjb2xvcjpuYXZ5OyBmb250LWZhbWlseTp2ZXJkYW5hOyANCiAgICAgICAgICAgICAgICAgICAgICBmb250LXZhcmlhbnQ6IHNtYWxsLWNhcHM7IGZvbnQtd2VpZ2h0OiBib2xkOyIpKSksDQogICAgIyMNCiAgICAjIFNpZGViYXIgbGF5b3V0IHdpdGggaW5wdXQgYW5kIG91dHB1dCBkZWZpbml0aW9ucyAtLS0tDQogICAgc2lkZWJhckxheW91dCggICAgIyBzaWRlcmJhckxheW91dDogICAgICAgDQogICAgICAgICAjIFNpZGViYXIgcGFuZWwgZm9yIGlucHV0cyA9PT4gdGhlIDFzdCBwYXJhbWV0ZXINCiAgICAgICAgICMNCiAgICAgICAgIHNpZGViYXJQYW5lbCggc3R5bGUgPSAiYmFja2dyb3VuZC1jb2xvcjojYWNkZmU2OyIsIA0KICAgICAgICAgICAgICAgIyBJbnB1dDogU2xpZGVyIGZvciB0aGUgbnVtYmVyIG9mIGJpbnMgPT0+IDJuZCBwYXJhbWV0ZXINCiAgICAgICAgICAgICAgIHRhZ3MkZGl2KCBoNCgiVXNlciBJbnB1dCBQYW5lbCIsIGFsaWduID0gImNlbnRlciIsDQogICAgICAgICAgICAgICAgICAgICAgICAgIHN0eWxlID0gImNvbG9yOmRhcmtyZWQ7IGZvbnQtZmFtaWx5OnZlcmRhbmE7IA0KICAgICAgICAgICAgICAgICAgICAgIGZvbnQtdmFyaWFudDogc21hbGwtY2FwczsgZm9udC13ZWlnaHQ6IGJvbGQ7IikpLA0KICAgICAgICAgICAgICAgIw0KICAgICAgICAgICAgICAgYnIoKSwNCiAgICAgICAgICAgICAgICMjDQogICAgICAgICAgICAgICBzbGlkZXJJbnB1dChpbnB1dElkID0gIm4iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWwgPSAiU2FtcGxlIHNpemUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbWluID0gMSwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIG1heCA9IDUwMCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbHVlID0gMTApLA0KICAgICAgICAgICAgICAgIyBzbGlkZXIgaW5wdXQ6IG5vcm1hbCBwb3B1bGF0aW9uIG1lYW4NCiAgICAgICAgICAgICAgIHNsaWRlcklucHV0KGlucHV0SWQgPSAibXUiLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbGFiZWwgPSAiTm9ybWFsIHBvcHVsYXRpb24gbWVhbiIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICBtaW4gPSAtNTAsDQogICAgICAgICAgICAgICAgICAgICAgICAgICBtYXggPSA1MCwNCiAgICAgICAgICAgICAgICAgICAgICAgICAgIHZhbHVlID0gMCksDQogICAgICAgICAgICAgICAjIG5vcm1hbCBwb3B1bGF0aW9uIHN0YW5kYXJkIGRldmlhdGlvbg0KICAgICAgICAgICAgICAgc2xpZGVySW5wdXQoaW5wdXRJZCA9ICJzaWdtYSIsDQogICAgICAgICAgICAgICAgICAgICAgICAgICBsYWJlbCA9ICJOb3JtYWwgcG9wdWxhdGlvbiBzdGFuZGFyZCBkZXZpYXRpb24iLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbWluID0gMC4xLA0KICAgICAgICAgICAgICAgICAgICAgICAgICAgbWF4ID0gMzAsDQogICAgICAgICAgICAgICAgICAgICAgICAgICB2YWx1ZSA9IDEpKSwNCiAgICAgICAgICMgTWFpbiBwYW5lbCBmb3IgZGlzcGxheWluZyBvdXRwdXRzIC0tLS0NCiAgICAgICAgIG1haW5QYW5lbCggc3R5bGUgPSAiYmFja2dyb3VuZC1jb2xvcjpsaWdodGdyYXk7IHRleHQtYWxpZ246IGNlbnRlcjsiLCANCiAgICAgICAgICAgICAgIyBPdXRwdXQ6IEhpc3RvZ3JhbSAtLS0tDQogICAgICAgICAgICAgIHBsb3RPdXRwdXQob3V0cHV0SWQgPSAiZGlzdFBsb3QiKQ0KICAgICAgICAgKQ0KICAgKSkNCiMgRGVmaW5lIHNlcnZlciBsb2dpYyByZXF1aXJlZCB0byBkcmF3IGEgaGlzdG9ncmFtIC0tLS0NCnNlcnZlciA8LSBmdW5jdGlvbihpbnB1dCwgb3V0cHV0KSB7DQogICMgSGlzdG9ncmFtIG9mIHRoZSBzaW11bGF0ZWQgbm9ybWFsIGRhdGEgLS0tLQ0KICAjIHdpdGggdGhlIHJlcXVlc3RlZCBudW1iZXIgb2YgYmlucw0KICBvdXRwdXQkZGlzdFBsb3QgPC0gcmVuZGVyUGxvdCh7DQogICAgIyByYW5kb20gbnVtYmVyIGdlbmVyYXRpb24NCiAgICBub3JtLnNjb3JlIDwtIHJub3JtKGlucHV0JG4sIGlucHV0JG11LCBpbnB1dCRzaWdtYSkNCiAgICAjIw0KICAgIHBhcihiZyA9ICJsaWdodGdyYXkiKQ0KICAgIGhpc3Qobm9ybS5zY29yZSwgY29sID0gImN5YW40IiwgYm9yZGVyID0gImRhcmtyZWQiLA0KICAgICAgICAgeGxhYiA9ICJIaXN0b2dyYW0gb2YgZ2VuZXJhdGVkIG5vcm1hbCBkYXRhIiwNCiAgICAgICAgIG1haW4gPSAiU2ltdWxhdGVkIE5vcm1hbCBEaXN0cmlidXRpb24iKQ0KICAgICAgfSwgaGVpZ2h0ID0gMzUwLCB3aWR0aCA9IDQwMCApDQogIH0NCiMgQ3JlYXRlIFNoaW55IGFwcCAtLS0tDQpzaGlueUFwcCh1aSA9IHVpLCBzZXJ2ZXIgPSBzZXJ2ZXIpDQpgYGANCg0K</div>
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("section-TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open');
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("Shiny.Rmd");
+  window.initializeCodeFolding("hide" === "show");
+});
+</script>
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

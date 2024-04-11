@@ -1,0 +1,183 @@
+---
+title: "Shiny Application"
+author: "Edward Coleman"
+date: "West Chester University"
+output:
+   html_document: 
+    toc: yes
+    toc_depth: 4
+    toc_float: no
+    code_folding: hide
+    code_download: yes
+    smooth_scroll: yes
+    number_sections: yes
+    theme: readable
+runtime: shiny
+---
+
+<style type="text/css">
+div#TOC li {
+    list-style:none;
+    background-image:none;
+    background-repeat:none;
+    background-position:0;
+}
+
+h1.title {
+  font-size: 24px;
+  font-weight: bold;
+  color: DarkRed;
+  text-align: center;
+}
+h4.author { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkRed;
+  text-align: center;
+}
+h4.date { /* Header 4 - and the author and data headers use this too  */
+  font-size: 18px;
+  font-family: "Times New Roman", Times, serif;
+  color: DarkBlue;
+  text-align: center;
+}
+h1 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 22px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: center;
+}
+h2 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h3 { /* Header 3 - and the author and data headers use this too  */
+    font-size: 15px;
+    font-family: "Times New Roman", Times, serif;
+    color: navy;
+    text-align: left;
+}
+
+h4 { /* Header 4 - and the author and data headers use this too  */
+    font-size: 18px;
+    font-family: "Times New Roman", Times, serif;
+    color: darkred;
+    text-align: left;
+}
+</style>
+
+```{r setup, include=FALSE}
+if (!require("knitr")) {
+   install.packages("knitr")
+   library(knitr)
+}
+if (!require("shiny")) {
+   install.packages("shiny")
+   library(shiny)
+}
+if (!require("ggplot2")) {
+   install.packages("ggplot2")
+   library(ggplot2)
+}
+if (!require("tidyverse")) {
+   install.packages("tidyverse")
+   library(tidyverse)
+}
+if (!require("dplyr")) {
+   install.packages("dplyr")
+   library(dplyr)
+}
+knitr::opts_chunk$set(echo = TRUE,       
+                      warning = FALSE,   
+                      result = TRUE,   
+                      message = FALSE,
+                      fig.align='center', 
+                      fig.pos = 'ht')
+### The following functions enable
+### shiny apps to display inside RMarkdown document.
+### you don't need to understand these functions.
+```
+
+
+
+# Case Study I  - Density of Normal Distribution
+We revise the previous example and redesign the layout by including a title, a sidebar, and main panels. We place three input widgets requesting sample size, the population mean and standard deviation. The output histogram will be placed in the main panel. The following is the detailed code
+
+```{r}
+library(shiny)
+setwd("C:/Users/ecole/OneDrive - West Chester University of PA/Data Visualization/Week Eleven (Shiny)")
+
+# Define UI for the app that draws a histogram ----
+ui <- fluidPage(
+  withMathJax(),
+  ### Important: The following tag allows inline equations in MathJax
+  tags$div(HTML("<script type='text/x-mathjax-config' >
+            MathJax.Hub.Config({
+            tex2jax: {inlineMath: [['$','$'], ['\\(','\\)']]}
+            });
+            </script >
+            ")),
+  ### 
+  br(), br(), 
+  wellPanel(style = "background-color:#acdfe6;",  
+    # App title ----
+    titlePanel(h2("Simulating Standard Normal Distribution", align = "center",
+                          style = "color:navy; font-family:verdana; 
+                      font-variant: small-caps; font-weight: bold;"))),
+    ##
+    # Sidebar layout with input and output definitions ----
+    sidebarLayout(    # siderbarLayout:       
+         # Sidebar panel for inputs ==> the 1st parameter
+         #
+         sidebarPanel( style = "background-color:#acdfe6;", 
+               # Input: Slider for the number of bins ==> 2nd parameter
+               tags$div( h4("User Input Panel", align = "center",
+                          style = "color:darkred; font-family:verdana; 
+                      font-variant: small-caps; font-weight: bold;")),
+               #
+               br(),
+               ##
+               sliderInput(inputId = "n",
+                           label = "Sample size",
+                           min = 1,
+                           max = 500,
+                           value = 10),
+               # slider input: normal population mean
+               sliderInput(inputId = "mu",
+                           label = "Normal population mean",
+                           min = -50,
+                           max = 50,
+                           value = 0),
+               # normal population standard deviation
+               sliderInput(inputId = "sigma",
+                           label = "Normal population standard deviation",
+                           min = 0.1,
+                           max = 30,
+                           value = 1)),
+         # Main panel for displaying outputs ----
+         mainPanel( style = "background-color:lightgray; text-align: center;", 
+              # Output: Histogram ----
+              plotOutput(outputId = "distPlot")
+         )
+   ))
+# Define server logic required to draw a histogram ----
+server <- function(input, output) {
+  # Histogram of the simulated normal data ----
+  # with the requested number of bins
+  output$distPlot <- renderPlot({
+    # random number generation
+    norm.score <- rnorm(input$n, input$mu, input$sigma)
+    ##
+    par(bg = "lightgray")
+    hist(norm.score, col = "cyan4", border = "darkred",
+         xlab = "Histogram of generated normal data",
+         main = "Simulated Normal Distribution")
+      }, height = 350, width = 400 )
+  }
+# Create Shiny app ----
+shinyApp(ui = ui, server = server)
+```
+
